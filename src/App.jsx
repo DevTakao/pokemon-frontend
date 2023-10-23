@@ -1,7 +1,12 @@
 import "./App.css";
+import HomePage from "./components/Home/HomePage";
 
 function App() {
-  return <>Hello React Strapi</>;
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
 }
 
 export default App;
