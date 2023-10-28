@@ -1,24 +1,37 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Loading from "../../common/Loading";
 
 const HomePage = () => {
   const [data, setData] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isLastPage, setIsLastPage] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
     console.log("fetchData for page:", pageNo);
-    const { data: res } = await axios.get(
-      `http://localhost:1337/api/pokemons?pagination[pageSize]=1&pagination[page]=${pageNo}&sort[0]=name:asc`
-    );
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const { data: res } = await axios.get(
+        `http://localhost:1337/api/pokemons?pagination[pageSize]=1&pagination[page]=${pageNo}&sort[0]=name:asc`
+      );
 
-    const data = res.data;
-    const pagination = res.meta.pagination;
+      const data = res.data;
+      const pagination = res.meta.pagination;
 
-    setData(data);
-    setIsFirstPage(pagination.page === 1);
-    setIsLastPage(pagination.page === pagination.pageCount);
+      setData(data);
+      setIsFirstPage(pagination.page === 1);
+      setIsLastPage(pagination.page === pagination.pageCount);
+    } catch (err) {
+      setIsError(true);
+      console.log("Error");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // const addData = async () => {
@@ -46,6 +59,8 @@ const HomePage = () => {
 
   return (
     <div className="p-20">
+      {isLoading && <Loading />}
+      {isError && <p className="my-5 text-red-400">Unexpected error occured.</p>}
       <div>
         {Array.isArray(data) &&
           data.map((pokemon) => (
