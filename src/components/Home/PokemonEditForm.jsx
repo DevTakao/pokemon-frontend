@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
-// eslint-disable-next-line react/prop-types
 const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
   console.log("initialValues in edit form", initialValues);
-  // eslint-disable-next-line react/prop-types
   const [formData, setFormData] = useState();
 
   const submitForm = (e) => {
@@ -15,13 +13,11 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
 
   const resetForm = () => {
     console.log("reset");
-    // eslint-disable-next-line react/prop-types
-    setFormData(initialValues.attributes);
+    setFormData(initialValues);
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react/prop-types
-    setFormData(initialValues.attributes);
+    setFormData(initialValues);
   }, [initialValues]);
 
   return !formData ? (

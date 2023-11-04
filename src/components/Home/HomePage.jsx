@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loading from "../../common/Loading";
-import PokemonForm from "./PokemonForm";
-import PokemonEditForm from "./PokemonEditForm";
 import PokemonCard from "./PokemonCard";
 import Pagination from "../../common/Pagination";
 import { useNavigate } from "react-router";
@@ -46,67 +44,23 @@ const HomePage = () => {
     }
   };
 
-  const createPokemon = async (formData) => {
-    try {
-      if (!formData.name || !formData.type) {
-        throw new Error("Name and type are required");
-      }
+  // const createPokemon = async (formData) => {
+  //   try {
+  //     if (!formData.name || !formData.type) {
+  //       throw new Error("Name and type are required");
+  //     }
 
-      const res = await axios.post(`${API_URL}/pokemons`, {
-        data: formData,
-      });
+  //     const res = await axios.post(`${API_URL}/pokemons`, {
+  //       data: formData,
+  //     });
 
-      console.log("POST res:", res);
-    } catch (err) {
-      setErrorMessage(JSON.stringify(err.message));
-      console.log("Error");
-      console.error(err);
-    }
-  };
-
-  const updatePokemon = async (formData) => {
-    try {
-      console.log("updatePokemon", formData, data[0]);
-      if (!formData.name || !formData.type) {
-        throw new Error("Name and type are required");
-      }
-
-      if (data && data[0]) {
-        const res = await axios.put(`${API_URL}/pokemons/${data[0].id}`, {
-          data: formData,
-        });
-        console.log("PUT res", res);
-      } else {
-        console.log("no data to update");
-      }
-    } catch (err) {
-      setErrorMessage(JSON.stringify(err.message));
-      console.log("Error");
-      console.error(err);
-    } finally {
-      await fetchData();
-    }
-  };
-
-  const deletePokemon = async () => {
-    try {
-      console.log("deletePokemon", data[0]);
-
-      // archive
-      if (data && data[0]) {
-        const res = await axios.delete(`${API_URL}/pokemons/${data[0].id}`);
-        console.log("DELETE res", res);
-      } else {
-        console.log("no data to delete");
-      }
-    } catch (err) {
-      setErrorMessage(JSON.stringify(err.message));
-      console.log("Error");
-      console.error(err);
-    } finally {
-      await fetchData();
-    }
-  };
+  //     console.log("POST res:", res);
+  //   } catch (err) {
+  //     setErrorMessage(JSON.stringify(err.message));
+  //     console.log("Error");
+  //     console.error(err);
+  //   }
+  // };
 
   const goPrev = () => {
     setPageNo((prev) => prev - 1);
@@ -138,13 +92,6 @@ const HomePage = () => {
             <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />
           ))}
       </div>
-
-      {/* <div className="flex justify-between">
-        {data && data[0] && (
-          <PokemonEditForm initialValues={data[0]} handleSubmit={updatePokemon} handleDelete={deletePokemon} />
-        )}
-        <PokemonForm handleSubmit={createPokemon} />
-      </div> */}
     </div>
   );
 };
