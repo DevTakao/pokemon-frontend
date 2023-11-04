@@ -1,0 +1,42 @@
+- [x] How websites work in the browser
+- [x] What is React and why is it used?
+- [x] Prerequisites to develop with React
+- [x] Understanding Node.js environment
+- [x] A React project folder structure
+- [x] Entry point of a React app
+- [x] JSX
+- [x] Virtual DOM
+- [x] How is rendering done in React?
+- [x] Different phases of render
+- [x] Rendering values in JSX
+- [x] Conditional rendering
+- [x] Rendering a list of data with Array.map()
+- [x] Thinking in states
+- [x] What is a hook in React?
+- [x] The useState() hook
+- [x] Installing packages into React project
+- [x] Asynchronous behavior of states
+- [x] How states trigger re-renders
+- [x] Props and prop-drilling
+- [x] Aligning side effects with useEffect()
+- [x] Lifecycles of React Components
+- [x] Lifecycles back in the days of Classes
+- [x] The cleanup function of useEffect()
+- [x] Understanding infinite loops of re-renders
+- [x] Making an app with states, props, and effects
+- [x] Mitigating prop-drilling with Context API
+- [x] Routing with react-router-dom
+- [x] The Single Page Application (SPA) experience
+- [x] The useRef() hook
+- [x] Understanding the roles of Frontend, Backend, and Database
+- [x] Creating a simple API with Strapi CMS
+- [x] Testing API endpoints with Postman
+- [x] Calling an API from React app
+- [x] CRUD in React with an API
+- [x] Basic error handling
+- [x] Basic loading logic
+- [x] Basic pagination
+- [x] Understanding the difference between using a CMS and not using a CMS
+- [ ] Using environment variables
+- [ ] Implementing Master-Detail UI Pattern in React
+- [ ] Creating a Not Found page
