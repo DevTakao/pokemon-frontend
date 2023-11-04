@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import Loading from "../../common/Loading";
 import PokemonForm from "./PokemonForm";
 import PokemonEditForm from "./PokemonEditForm";
+import PokemonCard from "./PokemonCard";
+import Pagination from "../../common/Pagination";
+import { useNavigate } from "react-router";
 
-const API_URL = "http://localhost:1337/api";
+const ENV = import.meta.env;
+const API_URL = ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL;
 
 const HomePage = () => {
+  const pageSize = 5;
+
   const [data, setData] = useState([]);
   const [pageNo, setPageNo] = useState(1);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -14,12 +20,14 @@ const HomePage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   const fetchData = async () => {
     try {
       setErrorMessage("");
       setIsLoading(true);
       const { data: res } = await axios.get(
-        `${API_URL}/pokemons?pagination[pageSize]=1&pagination[page]=${pageNo}&sort[0]=name:asc`
+        `${API_URL}/pokemons?pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
       );
 
       const data = res.data;
@@ -108,6 +116,11 @@ const HomePage = () => {
     setPageNo((prev) => prev + 1);
   };
 
+  const goToDetails = (id) => {
+    console.log("go to details");
+    navigate(`/pokemon/${id}`);
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,43 +130,21 @@ const HomePage = () => {
     <div className="p-20">
       {isLoading && <Loading />}
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
-      <div className="flex justify-center">
+
+      <Pagination goPrev={goPrev} goNext={goNext} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      <div className="flex flex-col justify-center">
         {Array.isArray(data) &&
           data.map((pokemon) => (
-            <div key={pokemon.id} className="inline-block bg-slate-300 shadow-xl rounded-xl py-4 px-5 mx-10 my-7">
-              <img
-                src={pokemon?.attributes?.imageUrl}
-                alt={pokemon?.attributes?.name}
-                className="object-contain w-[75px]"
-              />
-              {pokemon?.attributes?.name} | {pokemon?.attributes?.type}
-            </div>
+            <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />
           ))}
       </div>
 
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         {data && data[0] && (
           <PokemonEditForm initialValues={data[0]} handleSubmit={updatePokemon} handleDelete={deletePokemon} />
         )}
         <PokemonForm handleSubmit={createPokemon} />
-      </div>
-
-      <div className="flex justify-center">
-        <button
-          onClick={goPrev}
-          className="py-3 px-5 rounded-full bg-blue-500 text-white disabled:bg-gray-200 disabled:text-gray-500"
-          disabled={isFirstPage}
-        >
-          Prev
-        </button>
-        <button
-          onClick={goNext}
-          className="py-3 px-5 rounded-full bg-blue-500 text-white disabled:bg-gray-200 disabled:text-gray-500"
-          disabled={isLastPage}
-        >
-          Next
-        </button>
-      </div>
+      </div> */}
     </div>
   );
 };

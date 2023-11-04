@@ -38,10 +38,10 @@
 - [x] Basic loading logic
 - [x] Basic pagination
 - [x] Understanding the difference between using a CMS and not using a CMS
-- [ ] Using environment variables
-- [ ] The Master-Detail UI Pattern
-- [ ] Implementing the Master-Detail UI Pattern
-- [ ] Dynamic pages in React
+- [x] Using environment variables
+- [x] The Master-Detail UI Pattern
+- [x] Implementing the Master-Detail UI Pattern
+- [x] Dynamic pages in React
 - [ ] Adding a Not Found Page
 - [ ] The ideas of authentication in web
-- [ ] A simple authentication with username and password
+- [ ] A simple authentication with Strapi's built-in Auth API
