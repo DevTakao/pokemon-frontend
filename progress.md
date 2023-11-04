@@ -2,7 +2,8 @@
 - [x] What is React and why is it used?
 - [x] Prerequisites to develop with React
 - [x] Understanding Node.js environment
-- [x] A React project folder structure
+- [x] Setting up a React project with Vite
+- [x] What is in a React project folder?
 - [x] Entry point of a React app
 - [x] JSX
 - [x] Virtual DOM
@@ -14,7 +15,7 @@
 - [x] Thinking in states
 - [x] What is a hook in React?
 - [x] The useState() hook
-- [x] Installing packages into React project
+- [x] Installing packages (tailwindcss)
 - [x] Asynchronous behavior of states
 - [x] How states trigger re-renders
 - [x] Props and prop-drilling
@@ -38,5 +39,9 @@
 - [x] Basic pagination
 - [x] Understanding the difference between using a CMS and not using a CMS
 - [ ] Using environment variables
-- [ ] Implementing Master-Detail UI Pattern in React
-- [ ] Creating a Not Found page
+- [ ] The Master-Detail UI Pattern
+- [ ] Implementing the Master-Detail UI Pattern
+- [ ] Dynamic pages in React
+- [ ] Adding a Not Found Page
+- [ ] The ideas of authentication in web
+- [ ] A simple authentication with username and password
