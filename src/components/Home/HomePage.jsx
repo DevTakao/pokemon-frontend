@@ -75,6 +75,10 @@ const HomePage = () => {
     navigate(`/pokemon/${id}`);
   };
 
+  const goToCreatePage = () => {
+    navigate("/pokemon/create");
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,6 +96,13 @@ const HomePage = () => {
             <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />
           ))}
       </div>
+      <button
+        onClick={goToCreatePage}
+        type="button"
+        className="block bg-pink-400 text-white px-7 py-4 rounded-full mx-auto"
+      >
+        Create
+      </button>
     </div>
   );
 };
