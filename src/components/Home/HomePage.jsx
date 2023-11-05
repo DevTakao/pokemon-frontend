@@ -80,7 +80,11 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    const callFetchData = async () => {
+      await fetchData();
+    };
+
+    callFetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo]);
 
