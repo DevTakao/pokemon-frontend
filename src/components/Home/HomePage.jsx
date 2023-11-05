@@ -17,8 +17,15 @@ const HomePage = () => {
   const [isLastPage, setIsLastPage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [pageCount, setPageCount] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 
   const navigate = useNavigate();
+
+  const calcPageCount = () => {
+    const pc = Math.ceil(totalItems / pageSize);
+    setPageCount(pc);
+  };
 
   const fetchData = async () => {
     try {
@@ -35,6 +42,7 @@ const HomePage = () => {
       setData(data);
       setIsFirstPage(pagination.page === 1);
       setIsLastPage(pagination.page === pagination.pageCount);
+      setTotalItems(pagination.total);
     } catch (err) {
       setErrorMessage(JSON.stringify(err.message));
       console.log("Error");
@@ -88,12 +96,28 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo]);
 
+  useEffect(() => {
+    calcPageCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   return (
     <div className="p-20">
       {isLoading && <Loading />}
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
 
-      <Pagination goPrev={goPrev} goNext={goNext} isFirstPage={isFirstPage} isLastPage={isLastPage} />
+      <Pagination
+        pageCount={pageCount}
+        goPrev={goPrev}
+        goNext={goNext}
+        isFirstPage={isFirstPage}
+        isLastPage={isLastPage}
+        handlePageChange={(pageNo) => {
+          console.log("Clicked pageNo", pageNo);
+          setPageNo(pageNo);
+        }}
+        currentPage={pageNo}
+      />
       <div className="flex flex-col justify-center my-10">
         {Array.isArray(data) &&
           data.map((pokemon) => (
