@@ -43,8 +43,8 @@
 - [x] Implementing the Master-Detail UI Pattern
 - [x] Dynamic pages in React
 - [x] Adding a Not Found Page
-- [ ] Better pagination
-- [ ] Search
+- [x] Better pagination
+- [x] Search
 - [ ] Filter
 - [ ] The ideas of authentication in web
 - [ ] A simple authentication with Strapi's built-in Auth API

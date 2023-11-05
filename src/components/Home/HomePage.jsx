@@ -4,6 +4,7 @@ import Loading from "../../common/Loading";
 import PokemonCard from "./PokemonCard";
 import Pagination from "../../common/Pagination";
 import { useNavigate } from "react-router";
+import Searchbar from "./Searchbar";
 
 const ENV = import.meta.env;
 const API_URL = ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL;
@@ -20,6 +21,9 @@ const HomePage = () => {
   const [pageCount, setPageCount] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
 
+  // search
+  const [inputValue, setInputValue] = useState("");
+
   const navigate = useNavigate();
 
   const calcPageCount = () => {
@@ -32,7 +36,7 @@ const HomePage = () => {
       setErrorMessage("");
       setIsLoading(true);
       const { data: res } = await axios.get(
-        `${API_URL}/pokemons?pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
+        `${API_URL}/pokemons?filters[name][$containsi]=${inputValue}&pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
       );
 
       const data = res.data;
@@ -103,6 +107,7 @@ const HomePage = () => {
 
   return (
     <div className="p-20">
+      <Searchbar inputValue={inputValue} setInputValue={setInputValue} handleSearch={fetchData} />
       {isLoading && <Loading />}
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
 
@@ -118,12 +123,16 @@ const HomePage = () => {
         }}
         currentPage={pageNo}
       />
-      <div className="flex flex-col justify-center my-10">
-        {Array.isArray(data) &&
-          data.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />
-          ))}
-      </div>
+      {data.length > 0 ? (
+        <div className="flex flex-col justify-center my-10">
+          {Array.isArray(data) &&
+            data.map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />
+            ))}
+        </div>
+      ) : (
+        <p className="text-center my-10">No results found.</p>
+      )}
       <button
         onClick={goToCreatePage}
         type="button"
