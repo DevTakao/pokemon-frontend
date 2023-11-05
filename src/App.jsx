@@ -4,6 +4,7 @@ import "./App.css";
 import HomePage from "./components/Home/HomePage";
 import DetailPage from "./components/Detail/DetailPage";
 import CreatePage from "./components/Create/CreatePage";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/pokemon/:id" element={<DetailPage />} />
           <Route path="/pokemon/create" element={<CreatePage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </div>
