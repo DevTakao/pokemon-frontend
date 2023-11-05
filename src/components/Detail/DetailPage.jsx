@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import MissingNoImage from "../../../public/missingno.png";
+import MissingNoImage from "../../assets/missingno.png";
 import Loading from "../../common/Loading";
 import PokemonEditForm from "./PokemonEditForm";
 
