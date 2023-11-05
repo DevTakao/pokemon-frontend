@@ -90,7 +90,7 @@ const HomePage = () => {
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
 
       <Pagination goPrev={goPrev} goNext={goNext} isFirstPage={isFirstPage} isLastPage={isLastPage} />
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center my-10">
         {Array.isArray(data) &&
           data.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} handleClick={() => goToDetails(pokemon.id)} />

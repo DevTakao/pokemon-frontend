@@ -23,9 +23,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
   return !formData ? (
     <></>
   ) : (
-    <form onSubmit={submitForm} onReset={resetForm} className="my-10">
-      <h1>Please fill the form to edit the current pokemon.</h1>
-
+    <form onSubmit={submitForm} onReset={resetForm} className="my-4">
       <div>
         <label htmlFor="pokemonName" className="w-[110px] inline-block font-bold">
           Name:
@@ -36,7 +34,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           name="pokemonName"
           value={formData.name}
           onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))}
-          className="border border-blue-300 rounded-lg bg-blue-300 text-black px-10 py-2 my-10 mx-3 placeholder:text-white"
+          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
 
@@ -50,7 +48,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           name="pokemonType"
           value={formData.type}
           onChange={(event) => setFormData((prev) => ({ ...prev, type: event.target.value }))}
-          className="border border-blue-300 rounded-lg bg-blue-300 text-black px-10 py-2 my-10 mx-3 placeholder:text-white"
+          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
 
@@ -64,19 +62,21 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           name="pokemonImageUrl"
           value={formData.imageUrl}
           onChange={(event) => setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))}
-          className="border border-blue-300 rounded-lg bg-blue-300 text-black px-10 py-2 my-10 mx-3 placeholder:text-white"
+          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
 
-      <button type="submit" className="bg-blue-400 text-white px-5 py-2 rounded-full mr-5">
-        Save Changes
-      </button>
-      <button type="reset" className="bg-slate-400 text-white px-5 py-2 rounded-full mr-5">
-        Reset
-      </button>
-      <button onClick={handleDelete} type="button" className="bg-red-400 text-red px-5 py-2 rounded-full">
-        Delete
-      </button>
+      <div className="mt-10 flex items-center justify-center">
+        <button type="submit" className="bg-blue-400 text-white px-5 py-2 rounded-full mr-5">
+          Save Changes
+        </button>
+        <button type="reset" className="bg-slate-400 text-white px-5 py-2 rounded-full mr-5">
+          Reset
+        </button>
+        <button onClick={handleDelete} type="button" className="bg-red-400 text-red px-5 py-2 rounded-full">
+          Delete
+        </button>
+      </div>
     </form>
   );
 };
