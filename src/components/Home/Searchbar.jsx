@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { FaSearch } from "react-icons/fa"
 import { POKEMON_TYPES } from "../../../constants"
+import { Tooltip } from "react-tooltip"
 
 const Searchbar = ({
   inputValue,
@@ -30,7 +31,10 @@ const Searchbar = ({
         name="searchInput"
         className="pl-6 pr-3 py-2 rounded-l-full border border-slate-600 bg-slate-200 focus:outline-none"
       />
+      <Tooltip id="search-tooltip" />
       <button
+        data-tooltip-id="search-tooltip"
+        data-tooltip-content="Search"
         onClick={handleSearch}
         className="inline-flex items-center rounded-r-full bg-blue-400 border border-slate-600 py-2 pl-3 pr-6"
       >

@@ -42,7 +42,7 @@ const HomePage = () => {
       const { data: res } = await axios.get(
         `${API_URL}/pokemons?filters[name][$containsi]=${inputValue}&${
           selectedType === "ANY" ? "" : `filters[type][$eqi]=${selectedType}&`
-        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
+        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc` // 403 Forbidden
       )
 
       const data = res.data
