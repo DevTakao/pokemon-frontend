@@ -1,103 +1,119 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import MissingNoImage from "../../assets/missingno.png";
-import Loading from "../../common/Loading";
-import PokemonEditForm from "./PokemonEditForm";
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router"
+import MissingNoImage from "../../assets/missingno.png"
+import Loading from "../../common/Loading"
+import PokemonEditForm from "./PokemonEditForm"
 
-const ENV = import.meta.env;
-const API_URL = ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL;
+const ENV = import.meta.env
+const API_URL =
+  ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL
 
 const DetailPage = () => {
-  const { id } = useParams(); // parameter
-  const navigate = useNavigate();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams() // parameter
+  const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
   const [pokemon, setPokemon] = useState({
     imageUrl: MissingNoImage,
     name: "MissingNo",
     type: "???",
-  });
+  })
 
   const fetchDetails = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`);
-      const data = res.data.attributes;
-      setPokemon(data);
+      const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`)
+      const data = res.data.attributes
+      setPokemon(data)
     } catch (err) {
-      console.error(err);
+      console.error(err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const updatePokemon = async (formData) => {
     try {
       if (!formData.name || !formData.type) {
-        throw new Error("Name and type are required");
+        throw new Error("Name and type are required")
       }
 
       if (pokemon) {
         const res = await axios.put(`${API_URL}/pokemons/${id}`, {
           data: formData,
-        });
-        console.log("PUT res", res);
+        })
+        console.log("PUT res", res)
       } else {
-        console.log("no data to update");
+        console.log("no data to update")
       }
     } catch (err) {
-      setErrorMessage(JSON.stringify(err.message));
-      console.log("Error");
-      console.error(err);
+      setErrorMessage(JSON.stringify(err.message))
+      console.log("Error")
+      console.error(err)
     } finally {
-      await fetchDetails();
+      await fetchDetails()
     }
-  };
+  }
 
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        const res = await axios.delete(`${API_URL}/pokemons/${id}`);
-        console.log("DELETE res", res);
+        const res = await axios.delete(`${API_URL}/pokemons/${id}`)
+        console.log("DELETE res", res)
       } else {
-        console.log("no data to delete");
+        console.log("no data to delete")
       }
       // go back to list page
-      navigate("/");
+      navigate("/")
     } catch (err) {
-      setErrorMessage(JSON.stringify(err.message));
-      console.log("Error");
-      console.error(err);
+      setErrorMessage(JSON.stringify(err.message))
+      console.log("Error")
+      console.error(err)
     } finally {
-      await fetchDetails();
+      await fetchDetails()
     }
-  };
+  }
 
   useEffect(() => {
     const callFetchDetails = async () => {
-      await fetchDetails();
-    };
+      await fetchDetails()
+    }
 
-    callFetchDetails();
-  }, []);
+    callFetchDetails()
+  }, [])
 
   return isLoading ? (
     <Loading />
   ) : (
     <div className="text-center">
-      <button className="underline text-slate-600 hover:text-slate-500 mt-5" onClick={() => navigate("/")}>
+      <button
+        className="underline text-slate-600 hover:text-slate-500 mt-5"
+        onClick={() => navigate("/")}
+      >
         Back to Home
       </button>
       <div className="block max-w-[320px] bg-slate-300 shadow-md rounded-xl py-4 px-5 mx-auto my-7">
-        <img src={pokemon?.imageUrl} alt={pokemon?.name} className="object-contain w-full" />
+        <img
+          src={pokemon?.imageUrl}
+          alt={pokemon?.name}
+          className="object-contain w-full"
+        />
         <p className="font-bold text-center">{pokemon?.name}</p>
       </div>
-      <span className="py-3 px-4 rounded-full bg-slate-400 text-white">{pokemon?.type}</span>
+      <span className="py-3 px-4 rounded-full bg-slate-400 text-white">
+        {pokemon?.type}
+      </span>
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
-      {pokemon && <PokemonEditForm initialValues={pokemon} handleSubmit={updatePokemon} handleDelete={deletePokemon} />}
+      {pokemon && (
+        <PokemonEditForm
+          initialValues={pokemon}
+          handleSubmit={updatePokemon}
+          handleDelete={deletePokemon}
+        />
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default DetailPage;
+export default DetailPage

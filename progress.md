@@ -45,6 +45,8 @@
 - [x] Adding a Not Found Page
 - [x] Better pagination
 - [x] Search
-- [ ] Filter
+- [x] Filter
+- [ ] Popup
+- [ ] Tooltip
 - [ ] The ideas of authentication in web
 - [ ] A simple authentication with Strapi's built-in Auth API

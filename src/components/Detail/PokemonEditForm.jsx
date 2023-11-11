@@ -1,31 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { POKEMON_TYPES } from "../../../constants"
+
+const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
 const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
-  console.log("initialValues in edit form", initialValues);
-  const [formData, setFormData] = useState();
+  console.log("initialValues in edit form", initialValues)
+  const [formData, setFormData] = useState()
 
   const submitForm = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    console.log("formData", formData);
-    handleSubmit(formData);
-  };
+    console.log("formData", formData)
+    handleSubmit(formData)
+  }
 
   const resetForm = () => {
-    console.log("reset");
-    setFormData(initialValues);
-  };
+    console.log("reset")
+    setFormData(initialValues)
+  }
 
   useEffect(() => {
-    setFormData(initialValues);
-  }, [initialValues]);
+    setFormData(initialValues)
+  }, [initialValues])
 
   return !formData ? (
     <></>
   ) : (
     <form onSubmit={submitForm} onReset={resetForm} className="my-4">
       <div>
-        <label htmlFor="pokemonName" className="w-[110px] inline-block font-bold">
+        <label
+          htmlFor="pokemonName"
+          className="w-[110px] inline-block font-bold"
+        >
           Name:
         </label>
         <input
@@ -33,27 +39,38 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           placeholder="Pikachu"
           name="pokemonName"
           value={formData.name}
-          onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))}
+          onChange={(event) =>
+            setFormData((prev) => ({ ...prev, name: event.target.value }))
+          }
           className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
 
       <div>
-        <label htmlFor="pokemonType" className="w-[110px] inline-block font-bold">
+        <label
+          htmlFor="pokemonType"
+          className="w-[110px] inline-block font-bold"
+        >
           Type:
         </label>
-        <input
-          type="text"
-          placeholder="Electric"
-          name="pokemonType"
+        <select
           value={formData.type}
-          onChange={(event) => setFormData((prev) => ({ ...prev, type: event.target.value }))}
-          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
-        />
+          onChange={(event) =>
+            setFormData((prev) => ({ ...prev, type: event.target.value }))
+          }
+          className="bg-blue-300 rounded-full px-4 py-2 mx-3"
+        >
+          {SANITIZED_POKEMON_TYPES.map((type, i) => (
+            <option key={i}>{type}</option>
+          ))}
+        </select>
       </div>
 
       <div>
-        <label htmlFor="pokemonImageUrl" className="w-[110px] inline-block font-bold">
+        <label
+          htmlFor="pokemonImageUrl"
+          className="w-[110px] inline-block font-bold"
+        >
           Image URL:
         </label>
         <input
@@ -61,24 +78,36 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           placeholder="Electric"
           name="pokemonImageUrl"
           value={formData.imageUrl}
-          onChange={(event) => setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))}
+          onChange={(event) =>
+            setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))
+          }
           className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
 
       <div className="mt-10 flex items-center justify-center">
-        <button type="submit" className="bg-blue-400 text-white px-5 py-2 rounded-full mr-5">
+        <button
+          type="submit"
+          className="bg-blue-400 text-white px-5 py-2 rounded-full mr-5"
+        >
           Save Changes
         </button>
-        <button type="reset" className="bg-slate-400 text-white px-5 py-2 rounded-full mr-5">
+        <button
+          type="reset"
+          className="bg-slate-400 text-white px-5 py-2 rounded-full mr-5"
+        >
           Reset
         </button>
-        <button onClick={handleDelete} type="button" className="bg-red-400 text-red px-5 py-2 rounded-full">
+        <button
+          onClick={handleDelete}
+          type="button"
+          className="bg-red-400 text-red px-5 py-2 rounded-full"
+        >
           Delete
         </button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default PokemonEditForm;
+export default PokemonEditForm
