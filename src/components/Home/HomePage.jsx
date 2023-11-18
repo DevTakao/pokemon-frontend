@@ -5,6 +5,7 @@ import PokemonCard from "./PokemonCard"
 import Pagination from "../../common/Pagination"
 import { useNavigate } from "react-router"
 import Searchbar from "./Searchbar"
+import { ImCross } from "react-icons/im"
 
 const ENV = import.meta.env
 const API_URL =
@@ -24,6 +25,7 @@ const HomePage = () => {
 
   // search
   const [inputValue, setInputValue] = useState("")
+  const [searchButtonClicked, setSearchButtonClicked] = useState(false)
 
   // filter
   const [selectedType, setSelectedType] = useState("ANY")
@@ -60,6 +62,12 @@ const HomePage = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const searchClear = () => {
+    setInputValue("")
+    setSelectedType("ANY")
+    setSearchButtonClicked(false)
   }
 
   // const createPokemon = async (formData) => {
@@ -104,7 +112,7 @@ const HomePage = () => {
 
     callFetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNo])
+  }, [pageNo, searchButtonClicked])
 
   useEffect(() => {
     calcPageCount()
@@ -119,7 +127,25 @@ const HomePage = () => {
         handleSearch={fetchData}
         selectedType={selectedType}
         setSelectedType={setSelectedType}
+        setSearchButtonClicked={setSearchButtonClicked}
       />
+      {searchButtonClicked && (
+        <div className="flex mb-2 text-blue-400">
+          <p>Showing results for : {inputValue}</p>
+          <button
+            className="flex block  px-3 ml-2 border border-black rounded-full"
+            onClick={searchClear}
+          >
+            <ImCross className="m-auto" /> Clear
+          </button>
+        </div>
+      )}
+      {/* <div className="flex text-blue-400">
+        <p>Showing results for : {inputValue}</p>
+        <button className="flex block  px-3 ml-2 border border-black rounded-full">
+          <ImCross className="m-auto" /> Clear
+        </button>
+      </div> */}
       {isLoading && <Loading />}
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
 
