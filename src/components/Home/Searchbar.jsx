@@ -9,11 +9,17 @@ const Searchbar = ({
   selectedType,
   setSelectedType,
   handleSearch,
+  setSearchButtonClicked,
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      setSearchButtonClicked(true)
       handleSearch()
     }
+  }
+  const handleSearchClick = () => {
+    setSearchButtonClicked(true)
+    handleSearch()
   }
 
   useEffect(() => {
@@ -35,12 +41,13 @@ const Searchbar = ({
       <button
         data-tooltip-id="search-tooltip"
         data-tooltip-content="Search"
-        onClick={handleSearch}
+        onClick={handleSearchClick}
         className="inline-flex items-center rounded-r-full bg-blue-400 border border-slate-600 py-2 pl-3 pr-6"
       >
         <FaSearch className="text-2xl text-white" />
       </button>
       <select
+        value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
         className="bg-blue-200 rounded-full px-4 py-2 mx-3"
       >
