@@ -1,11 +1,19 @@
-const Pagination = ({ pageCount, goPrev, goNext, isFirstPage, isLastPage, handlePageChange, currentPage }) => {
-  const pageMapper = Array.from({ length: pageCount });
+const Pagination = ({
+  pageCount,
+  goPrev,
+  goNext,
+  isFirstPage,
+  isLastPage,
+  handlePageChange,
+  currentPage,
+}) => {
+  const pageMapper = Array.from({ length: pageCount })
 
   return (
     <div className="flex items-center justify-center">
       <button
         onClick={goPrev}
-        className="py-3 px-5 rounded-full bg-blue-500 text-white disabled:bg-gray-200 disabled:text-gray-500"
+        className="px-5 py-3 text-white bg-blue-500 rounded-full disabled:bg-gray-200 disabled:text-gray-500"
         disabled={isFirstPage}
       >
         Prev
@@ -26,13 +34,13 @@ const Pagination = ({ pageCount, goPrev, goNext, isFirstPage, isLastPage, handle
 
       <button
         onClick={goNext}
-        className="py-3 px-5 rounded-full bg-blue-500 text-white disabled:bg-gray-200 disabled:text-gray-500"
+        className="px-5 py-3 text-white bg-blue-500 rounded-full disabled:bg-gray-200 disabled:text-gray-500"
         disabled={isLastPage}
       >
         Next
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

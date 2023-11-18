@@ -9,16 +9,14 @@ const Searchbar = ({
   selectedType,
   setSelectedType,
   handleSearch,
-  setSearchButtonClicked,
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      setSearchButtonClicked(true)
       handleSearch()
     }
   }
+
   const handleSearchClick = () => {
-    setSearchButtonClicked(true)
     handleSearch()
   }
 
@@ -27,7 +25,7 @@ const Searchbar = ({
   }, [selectedType])
 
   return (
-    <div className="flex justify-center items-center mb-10">
+    <div className="flex items-center justify-center mb-10">
       <input
         placeholder="Enter Pokemon Name"
         onKeyDown={handleKeyDown}
@@ -35,21 +33,21 @@ const Searchbar = ({
         onChange={(e) => setInputValue(e.target.value)}
         type="text"
         name="searchInput"
-        className="pl-6 pr-3 py-2 rounded-l-full border border-slate-600 bg-slate-200 focus:outline-none"
+        className="py-2 pl-6 pr-3 border rounded-l-full border-slate-600 bg-slate-200 focus:outline-none"
       />
       <Tooltip id="search-tooltip" />
       <button
         data-tooltip-id="search-tooltip"
         data-tooltip-content="Search"
         onClick={handleSearchClick}
-        className="inline-flex items-center rounded-r-full bg-blue-400 border border-slate-600 py-2 pl-3 pr-6"
+        className="inline-flex items-center py-2 pl-3 pr-6 bg-blue-400 border rounded-r-full border-slate-600"
       >
         <FaSearch className="text-2xl text-white" />
       </button>
       <select
         value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
-        className="bg-blue-200 rounded-full px-4 py-2 mx-3"
+        className="px-4 py-2 mx-3 bg-blue-200 rounded-full"
       >
         {POKEMON_TYPES.map((type, i) => (
           <option key={i}>{type}</option>

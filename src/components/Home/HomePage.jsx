@@ -24,11 +24,9 @@ const HomePage = () => {
   const [totalItems, setTotalItems] = useState(0)
 
   // search
-  const [inputValue, setInputValue] = useState("")
-  const [searchButtonClicked, setSearchButtonClicked] = useState(false)
-
-  // filter
-  const [selectedType, setSelectedType] = useState("ANY")
+  const [inputValue, setInputValue] = useState("") // input box data
+  const [selectedType, setSelectedType] = useState("ANY") // input dropdown data
+  const [activeSearchValue, setActiveSearchValue] = useState("") // search parameter
 
   const navigate = useNavigate()
 
@@ -42,7 +40,7 @@ const HomePage = () => {
       setErrorMessage("")
       setIsLoading(true)
       const { data: res } = await axios.get(
-        `${API_URL}/pokemons?filters[name][$containsi]=${inputValue}&${
+        `${API_URL}/pokemons?filters[name][$containsi]=${activeSearchValue}&${
           selectedType === "ANY" ? "" : `filters[type][$eqi]=${selectedType}&`
         }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc` // 403 Forbidden
       )
@@ -50,7 +48,6 @@ const HomePage = () => {
       const data = res.data
       const pagination = res.meta.pagination
 
-      console.log("data", data)
       setData(data)
       setIsFirstPage(pagination.page === 1)
       setIsLastPage(pagination.page === pagination.pageCount)
@@ -65,28 +62,10 @@ const HomePage = () => {
   }
 
   const searchClear = () => {
+    setActiveSearchValue("")
     setInputValue("")
     setSelectedType("ANY")
-    setSearchButtonClicked(false)
   }
-
-  // const createPokemon = async (formData) => {
-  //   try {
-  //     if (!formData.name || !formData.type) {
-  //       throw new Error("Name and type are required");
-  //     }
-
-  //     const res = await axios.post(`${API_URL}/pokemons`, {
-  //       data: formData,
-  //     });
-
-  //     console.log("POST res:", res);
-  //   } catch (err) {
-  //     setErrorMessage(JSON.stringify(err.message));
-  //     console.log("Error");
-  //     console.error(err);
-  //   }
-  // };
 
   const goPrev = () => {
     setPageNo((prev) => prev - 1)
@@ -97,7 +76,6 @@ const HomePage = () => {
   }
 
   const goToDetails = (id) => {
-    console.log("go to details")
     navigate(`/pokemon/${id}`)
   }
 
@@ -106,46 +84,39 @@ const HomePage = () => {
   }
 
   useEffect(() => {
+    calcPageCount()
+  }, [data])
+
+  useEffect(() => {
     const callFetchData = async () => {
       await fetchData()
     }
 
     callFetchData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNo, searchButtonClicked])
-
-  useEffect(() => {
-    calcPageCount()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [activeSearchValue, pageSize, pageNo])
 
   return (
     <div className="p-20">
       <Searchbar
         inputValue={inputValue}
         setInputValue={setInputValue}
-        handleSearch={fetchData}
+        handleSearch={() => setActiveSearchValue(inputValue)}
         selectedType={selectedType}
         setSelectedType={setSelectedType}
-        setSearchButtonClicked={setSearchButtonClicked}
       />
-      {searchButtonClicked && (
+
+      {activeSearchValue && (
         <div className="flex mb-2 text-blue-400">
-          <p>Showing results for : {inputValue}</p>
+          <p>Showing results for : {activeSearchValue}</p>
           <button
-            className="flex block  px-3 ml-2 border border-black rounded-full"
+            className="flex block px-3 ml-2 border border-black rounded-full"
             onClick={searchClear}
           >
             <ImCross className="m-auto" /> Clear
           </button>
         </div>
       )}
-      {/* <div className="flex text-blue-400">
-        <p>Showing results for : {inputValue}</p>
-        <button className="flex block  px-3 ml-2 border border-black rounded-full">
-          <ImCross className="m-auto" /> Clear
-        </button>
-      </div> */}
+
       {isLoading && <Loading />}
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
 
@@ -156,7 +127,6 @@ const HomePage = () => {
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
         handlePageChange={(pageNo) => {
-          console.log("Clicked pageNo", pageNo)
           setPageNo(pageNo)
         }}
         currentPage={pageNo}
@@ -173,12 +143,12 @@ const HomePage = () => {
             ))}
         </div>
       ) : (
-        <p className="text-center my-10">No results found.</p>
+        <p className="my-10 text-center">No results found.</p>
       )}
       <button
         onClick={goToCreatePage}
         type="button"
-        className="block bg-pink-400 text-white px-7 py-4 rounded-full mx-auto"
+        className="block py-4 mx-auto text-white bg-pink-400 rounded-full px-7"
       >
         Create
       </button>
