@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router"
 import MissingNoImage from "../../assets/missingno.png"
 import Loading from "../../common/Loading"
 import PokemonEditForm from "./PokemonEditForm"
-import DeletePokemon from "./DeletePokemon"
-DeletePokemon
+import ConfirmDeletePopup from "./ConfirmDeletePopup"
 
 const ENV = import.meta.env
 const API_URL =
@@ -24,13 +23,7 @@ const DetailPage = () => {
 
   const [boxShow, setBoxShow] = useState(false)
 
-  const showBoxHandler = () => {
-    setBoxShow(true)
-  }
-
-  const hideBoxHandler = () => {
-    setBoxShow(false)
-  }
+  const toggleBoxShow = () => setBoxShow(!boxShow)
 
   const fetchDetails = async () => {
     setIsLoading(true)
@@ -100,7 +93,7 @@ const DetailPage = () => {
   ) : (
     <div className="text-center">
       <button
-        className="underline text-slate-600 hover:text-slate-500 mt-5"
+        className="mt-5 underline text-slate-600 hover:text-slate-500"
         onClick={() => navigate("/")}
       >
         Back to Home
@@ -113,18 +106,18 @@ const DetailPage = () => {
         />
         <p className="font-bold text-center">{pokemon?.name}</p>
       </div>
-      <span className="py-3 px-4 rounded-full bg-slate-400 text-white">
+      <span className="px-4 py-3 text-white rounded-full bg-slate-400">
         {pokemon?.type}
       </span>
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
       {boxShow && (
-        <DeletePokemon onClose={hideBoxHandler} onDelete={deletePokemon} />
+        <ConfirmDeletePopup onClose={toggleBoxShow} onDelete={deletePokemon} />
       )}
       {pokemon && (
         <PokemonEditForm
           initialValues={pokemon}
           handleSubmit={updatePokemon}
-          onShowBox={showBoxHandler}
+          handleDelete={toggleBoxShow}
         />
       )}
     </div>

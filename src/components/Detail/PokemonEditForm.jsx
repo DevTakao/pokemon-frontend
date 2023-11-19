@@ -3,7 +3,7 @@ import { POKEMON_TYPES } from "../../../constants"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
-const PokemonEditForm = ({ initialValues, handleSubmit, onShowBox }) => {
+const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
   // console.log("initialValues in edit form", initialValues)
   const [formData, setFormData] = useState()
 
@@ -42,7 +42,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, onShowBox }) => {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, name: event.target.value }))
           }
-          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
+          className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
         />
       </div>
 
@@ -58,7 +58,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, onShowBox }) => {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, type: event.target.value }))
           }
-          className="bg-blue-300 rounded-full px-4 py-2 mx-3"
+          className="px-4 py-2 mx-3 bg-blue-300 rounded-full"
         >
           {SANITIZED_POKEMON_TYPES.map((type, i) => (
             <option key={i}>{type}</option>
@@ -81,27 +81,27 @@ const PokemonEditForm = ({ initialValues, handleSubmit, onShowBox }) => {
           onChange={(event) =>
             setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))
           }
-          className="border border-blue-300 rounded-lg bg-blue-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
+          className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
         />
       </div>
 
-      <div className="mt-10 flex items-center justify-center">
+      <div className="flex items-center justify-center mt-10">
         <button
           type="submit"
-          className="bg-blue-400 text-white px-5 py-2 rounded-full mr-5"
+          className="px-5 py-2 mr-5 text-white bg-blue-400 rounded-full"
         >
           Save Changes
         </button>
         <button
           type="reset"
-          className="bg-slate-400 text-white px-5 py-2 rounded-full mr-5"
+          className="px-5 py-2 mr-5 text-white rounded-full bg-slate-400"
         >
           Reset
         </button>
         <button
-          onClick={onShowBox}
+          onClick={handleDelete}
           type="button"
-          className="bg-red-400 text-red px-5 py-2 rounded-full"
+          className="px-5 py-2 bg-red-400 rounded-full text-red"
         >
           Delete
         </button>

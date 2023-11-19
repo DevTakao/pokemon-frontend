@@ -46,7 +46,8 @@
 - [x] Better pagination
 - [x] Search
 - [x] Filter
-- [ ] Popup
+- [x] Popup
 - [x] Tooltip
+- [x] Advanced: Showing search result
 - [ ] The ideas of authentication in web
 - [ ] A simple authentication with Strapi's built-in Auth API
