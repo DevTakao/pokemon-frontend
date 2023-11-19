@@ -93,7 +93,7 @@ const HomePage = () => {
     }
 
     callFetchData()
-  }, [activeSearchValue, pageSize, pageNo])
+  }, [activeSearchValue, selectedType, pageSize, pageNo])
 
   return (
     <div className="p-20">
