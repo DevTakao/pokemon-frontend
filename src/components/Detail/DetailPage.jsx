@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router"
 import MissingNoImage from "../../assets/missingno.png"
 import Loading from "../../common/Loading"
 import PokemonEditForm from "./PokemonEditForm"
+import DeletePokemon from "./DeletePokemon"
+DeletePokemon
 
 const ENV = import.meta.env
 const API_URL =
@@ -19,6 +21,16 @@ const DetailPage = () => {
     name: "MissingNo",
     type: "???",
   })
+
+  const [boxShow, setBoxShow] = useState(false)
+
+  const showBoxHandler = () => {
+    setBoxShow(true)
+  }
+
+  const hideBoxHandler = () => {
+    setBoxShow(false)
+  }
 
   const fetchDetails = async () => {
     setIsLoading(true)
@@ -105,11 +117,14 @@ const DetailPage = () => {
         {pokemon?.type}
       </span>
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
+      {boxShow && (
+        <DeletePokemon onClose={hideBoxHandler} onDelete={deletePokemon} />
+      )}
       {pokemon && (
         <PokemonEditForm
           initialValues={pokemon}
           handleSubmit={updatePokemon}
-          handleDelete={deletePokemon}
+          onShowBox={showBoxHandler}
         />
       )}
     </div>

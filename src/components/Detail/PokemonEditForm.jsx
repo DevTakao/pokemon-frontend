@@ -3,8 +3,8 @@ import { POKEMON_TYPES } from "../../../constants"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
-const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
-  console.log("initialValues in edit form", initialValues)
+const PokemonEditForm = ({ initialValues, handleSubmit, onShowBox }) => {
+  // console.log("initialValues in edit form", initialValues)
   const [formData, setFormData] = useState()
 
   const submitForm = (e) => {
@@ -99,7 +99,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           Reset
         </button>
         <button
-          onClick={handleDelete}
+          onClick={onShowBox}
           type="button"
           className="bg-red-400 text-red px-5 py-2 rounded-full"
         >
