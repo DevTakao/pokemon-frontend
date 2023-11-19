@@ -131,6 +131,7 @@ const HomePage = () => {
         }}
         currentPage={pageNo}
       />
+
       {data.length > 0 ? (
         <div className="flex flex-col justify-center my-10">
           {Array.isArray(data) &&
@@ -145,6 +146,7 @@ const HomePage = () => {
       ) : (
         <p className="my-10 text-center">No results found.</p>
       )}
+
       <button
         onClick={goToCreatePage}
         type="button"
