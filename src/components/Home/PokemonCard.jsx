@@ -14,18 +14,15 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const toggleBoxShow = () => setBoxShow(!boxShow)
-  console.log("boxshow = ", boxShow)
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        const res = await axios.delete(`${API_URL}/pokemons/${pokemon.id}`)
-        console.log("DELETE res", res)
+        await axios.delete(`${API_URL}/pokemons/${pokemon.id}`)
       } else {
-        console.log("no data to delete")
+        throw new Error("The data to delete does not exist")
       }
     } catch (err) {
       setErrorMessage(JSON.stringify(err.message))
-      console.log("Error")
       console.error(err)
     } finally {
       fetchData()
@@ -35,7 +32,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
   return (
     <div
       key={pokemon.id}
-      className="flex items-center bg-slate-300 shadow-lg rounded-xl py-4 px-5 mx-10 my-3 cursor-pointer border-2 border-transparent hover:border-blue-400"
+      className="flex items-center px-5 py-4 mx-10 my-3 border-2 border-transparent shadow-lg cursor-pointer bg-slate-300 rounded-xl hover:border-blue-400"
     >
       <img
         src={pokemon?.attributes?.imageUrl}
@@ -51,7 +48,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
           data-tooltip-content="Edit"
           type="button"
           onClick={handleClick}
-          className="px-5 py-2  rounded-full text-red text-xl"
+          className="px-5 py-2 text-xl rounded-full text-red"
         >
           <MdEdit />
         </button>
@@ -71,7 +68,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
           data-tooltip-id="delete-tooltip"
           data-tooltip-content="Delete"
           onClick={toggleBoxShow}
-          className="px-5 py-2 ml-2 bg-red-400 rounded-full text-red text-xl"
+          className="px-5 py-2 ml-2 text-xl bg-red-400 rounded-full text-red"
         >
           <MdDelete />
         </button>
