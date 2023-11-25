@@ -50,4 +50,5 @@
 - [x] Tooltip
 - [x] Advanced: Showing search result
 - [x] The ideas of authentication in web
-- [ ] A simple authentication with Strapi's built-in Auth API
+- [x] A simple authentication with Strapi's built-in Auth API
+- [ ] Add 2 More Pages In Navigation

@@ -13,9 +13,14 @@ const Navbar = () => {
     <nav className="p-4 bg-blue-500">
       <div className="container flex items-center justify-between mx-auto">
         <h1 className="text-2xl text-white">Pokemons</h1>
-        <Link to="aboutus">About Us</Link>
-        {/* <a href="/pokemon/1">About Us</a> */}
-        <a href="#">My Profile</a>
+        <ul className="flex items-center justify-between max-w-[700px] mx-auto">
+          <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
+            <Link to="aboutus">About Us</Link>
+          </li>
+          <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
+            <Link to="profile">My Profile</Link>
+          </li>
+        </ul>
         {isLoggedIn && (
           <button
             type="button"
