@@ -139,6 +139,7 @@ const HomePage = () => {
               <PokemonCard
                 key={pokemon.id}
                 pokemon={pokemon}
+                fetchData={fetchData}
                 handleClick={() => goToDetails(pokemon.id)}
               />
             ))}

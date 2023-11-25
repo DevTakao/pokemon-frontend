@@ -24,6 +24,7 @@ const DetailPage = () => {
   const [boxShow, setBoxShow] = useState(false)
 
   const toggleBoxShow = () => setBoxShow(!boxShow)
+  console.log("boxshow = ", boxShow)
 
   const fetchDetails = async () => {
     setIsLoading(true)
@@ -111,7 +112,11 @@ const DetailPage = () => {
       </span>
       {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
       {boxShow && (
-        <ConfirmDeletePopup onClose={toggleBoxShow} onDelete={deletePokemon} />
+        <ConfirmDeletePopup
+          showBox={boxShow}
+          onClose={toggleBoxShow}
+          onDelete={deletePokemon}
+        />
       )}
       {pokemon && (
         <PokemonEditForm
