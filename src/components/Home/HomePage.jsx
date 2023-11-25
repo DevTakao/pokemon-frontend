@@ -15,7 +15,7 @@ const HomePage = () => {
   const pageSize = 5
 
   const [data, setData] = useState([])
-  const [pageNo, setPageNo] = useState(1)
+  // const [pageNo, setPageNo] = useState(1)
   const [isFirstPage, setIsFirstPage] = useState(true)
   const [isLastPage, setIsLastPage] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
@@ -23,10 +23,14 @@ const HomePage = () => {
   const [pageCount, setPageCount] = useState(1)
   const [totalItems, setTotalItems] = useState(0)
 
-  // search
+  // query
   const [inputValue, setInputValue] = useState("") // input box data
   const [selectedType, setSelectedType] = useState("ANY") // input dropdown data
-  const [activeSearchValue, setActiveSearchValue] = useState("") // search parameter
+  const [queryParams, setQueryParams] = useState({
+    activeSearchValue: "",
+    selectedType: "ANY",
+    pageNo: 1,
+  }) // search parameters
 
   const navigate = useNavigate()
 
@@ -36,13 +40,17 @@ const HomePage = () => {
   }
 
   const fetchData = async () => {
+    console.log("call fetchData")
     try {
       setErrorMessage("")
       setIsLoading(true)
+
+      const { activeSearchValue, selectedType, pageNo } = queryParams
+
       const { data: res } = await axios.get(
         `${API_URL}/pokemons?filters[name][$containsi]=${activeSearchValue}&${
           selectedType === "ANY" ? "" : `filters[type][$eqi]=${selectedType}&`
-        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc` // 403 Forbidden
+        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
       )
 
       const data = res.data
@@ -61,18 +69,35 @@ const HomePage = () => {
     }
   }
 
+  const handleSearch = () => {
+    console.log(inputValue, selectedType)
+    setQueryParams((prev) => ({
+      ...prev,
+      activeSearchValue: inputValue,
+      selectedType: selectedType,
+    }))
+  }
+
   const searchClear = () => {
-    setActiveSearchValue("")
+    setQueryParams({
+      activeSearchValue: "",
+      selectedType: "ANY",
+      pageNo: 1,
+    })
     setInputValue("")
     setSelectedType("ANY")
   }
 
   const goPrev = () => {
-    setPageNo((prev) => prev - 1)
+    setQueryParams((prev) => ({ ...prev, pageNo: prev.pageNo - 1 }))
   }
 
   const goNext = () => {
-    setPageNo((prev) => prev + 1)
+    setQueryParams((prev) => ({ ...prev, pageNo: prev.pageNo + 1 }))
+  }
+
+  const goToPage = (pageNo) => {
+    setQueryParams((prev) => ({ ...prev, pageNo: pageNo }))
   }
 
   const goToDetails = (id) => {
@@ -93,23 +118,23 @@ const HomePage = () => {
     }
 
     callFetchData()
-  }, [activeSearchValue, selectedType, pageSize, pageNo])
+  }, [queryParams, pageSize])
 
   return (
     <div className="p-20">
       <Searchbar
         inputValue={inputValue}
         setInputValue={setInputValue}
-        handleSearch={() => setActiveSearchValue(inputValue)}
+        handleSearch={handleSearch}
         selectedType={selectedType}
         setSelectedType={setSelectedType}
       />
 
-      {activeSearchValue && (
+      {queryParams.activeSearchValue && (
         <div className="flex mb-2 text-blue-400">
-          <p>Showing results for : {activeSearchValue}</p>
+          <p>Showing results for : {queryParams.activeSearchValue}</p>
           <button
-            className="flex block px-3 ml-2 border border-black rounded-full"
+            className="flex px-3 ml-2 border border-black rounded-full"
             onClick={searchClear}
           >
             <ImCross className="m-auto" /> Clear
@@ -126,10 +151,8 @@ const HomePage = () => {
         goNext={goNext}
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
-        handlePageChange={(pageNo) => {
-          setPageNo(pageNo)
-        }}
-        currentPage={pageNo}
+        handlePageChange={(pageNo) => goToPage(pageNo)}
+        currentPage={queryParams.pageNo}
       />
 
       {data.length > 0 ? (

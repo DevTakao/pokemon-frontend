@@ -20,10 +20,6 @@ const Searchbar = ({
     handleSearch()
   }
 
-  useEffect(() => {
-    console.log("selectedType:", selectedType)
-  }, [selectedType])
-
   return (
     <div className="flex items-center justify-center mb-10">
       <input

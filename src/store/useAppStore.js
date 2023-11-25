@@ -1,7 +1,7 @@
 import { create } from "zustand"
 
 const states = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   counter: 1,
 }
 
