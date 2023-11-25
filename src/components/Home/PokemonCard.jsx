@@ -17,7 +17,12 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        await axios.delete(`${API_URL}/pokemons/${pokemon.id}`)
+        const jwt = localStorage.getItem("jwtToken")
+        await axios.delete(`${API_URL}/pokemons/${pokemon.id}`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
       } else {
         throw new Error("The data to delete does not exist")
       }

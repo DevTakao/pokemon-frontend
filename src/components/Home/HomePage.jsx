@@ -47,10 +47,18 @@ const HomePage = () => {
 
       const { activeSearchValue, selectedType, pageNo } = queryParams
 
+      const jwt = localStorage.getItem("jwtToken")
+      console.log("jwt get =>", jwt)
+
       const { data: res } = await axios.get(
         `${API_URL}/pokemons?filters[name][$containsi]=${activeSearchValue}&${
           selectedType === "ANY" ? "" : `filters[type][$eqi]=${selectedType}&`
-        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`
+        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
       )
 
       const data = res.data

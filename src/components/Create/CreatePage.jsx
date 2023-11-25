@@ -15,9 +15,16 @@ const CreatePage = () => {
         throw new Error("Name and type are required")
       }
 
-      const res = await axios.post(`${API_URL}/pokemons`, {
-        data: formData,
-      })
+      const jwt = localStorage.getItem("jwtToken")
+      const res = await axios.post(
+        `${API_URL}/pokemons`,
+        { data: formData },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
 
       if (res.status === 200) {
         alert("Success")
@@ -31,12 +38,12 @@ const CreatePage = () => {
   return (
     <div className="text-center">
       <button
-        className="underline text-slate-600 hover:text-slate-500 mt-5"
+        className="mt-5 underline text-slate-600 hover:text-slate-500"
         onClick={() => navigate("/")}
       >
         Back to Home
       </button>
-      <h1 className="font-bold text-2xl my-5">Create a new pokemon</h1>
+      <h1 className="my-5 text-2xl font-bold">Create a new pokemon</h1>
       <PokemonCreateForm handleSubmit={(formData) => createPokemon(formData)} />
     </div>
   )

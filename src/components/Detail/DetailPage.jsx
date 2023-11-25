@@ -29,7 +29,12 @@ const DetailPage = () => {
   const fetchDetails = async () => {
     setIsLoading(true)
     try {
-      const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`)
+      const jwt = localStorage.getItem("jwtToken")
+      const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       const data = res.data.attributes
       setPokemon(data)
     } catch (err) {
@@ -46,9 +51,18 @@ const DetailPage = () => {
       }
 
       if (pokemon) {
-        const res = await axios.put(`${API_URL}/pokemons/${id}`, {
-          data: formData,
-        })
+        const jwt = localStorage.getItem("jwtToken")
+        const res = await axios.put(
+          `${API_URL}/pokemons/${id}`,
+          {
+            data: formData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        )
         console.log("PUT res", res)
       } else {
         console.log("no data to update")
@@ -65,7 +79,12 @@ const DetailPage = () => {
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        const res = await axios.delete(`${API_URL}/pokemons/${id}`)
+        const jwt = localStorage.getItem("jwtToken")
+        const res = await axios.delete(`${API_URL}/pokemons/${id}`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
         console.log("DELETE res", res)
       } else {
         console.log("no data to delete")
