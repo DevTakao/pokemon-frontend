@@ -7,10 +7,12 @@ import CreatePage from "./components/Create/CreatePage"
 import NotFoundPage from "./components/NotFoundPage"
 import LoginPage from "./components/LoginPage"
 import PrivateWrapper from "./components/PrivateWrapper"
+import Navbar from "./common/Navbar"
 
 function App() {
   return (
     <div>
+      <Navbar />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />

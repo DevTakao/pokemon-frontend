@@ -3,13 +3,13 @@ import { persist, createJSONStorage } from "zustand/middleware"
 
 const states = {
   isLoggedIn: false,
-  counter: 1,
 }
 
 export const useAppStore = create(
   persist(
     (set) => ({
       ...states,
+      _clearStore: () => set(states),
       setIsLoggedIn: (bool) => set({ isLoggedIn: bool }),
     }),
     {
