@@ -8,14 +8,16 @@ import NotFoundPage from "./components/NotFoundPage"
 import LoginPage from "./components/LoginPage"
 import PrivateWrapper from "./components/PrivateWrapper"
 import Navbar from "./common/Navbar"
+import AboutUsPage from "./components/AboutUs/AboutUsPage"
 
 function App() {
   return (
     <div>
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/aboutus" element={<AboutUsPage />} />
 
           <Route path="/" element={<PrivateWrapper />}>
             <Route path="/" element={<HomePage />} />
