@@ -51,4 +51,7 @@
 - [x] Advanced: Showing search result
 - [x] The ideas of authentication in web
 - [x] A simple authentication with Strapi's built-in Auth API
-- [ ] Add 2 More Pages In Navigation
+- [x] Add 2 More Navigation Buttons In Navigation
+- [x] React.js Test 1
+- [x] Add 2 More Pages In Navigation
+- [ ] Homework: Add eye-icon feature and error messages to Login
