@@ -17,9 +17,11 @@ const Navbar = () => {
           <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
             <Link to="aboutus">About Us</Link>
           </li>
-          <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
-            <Link to="profile">My Profile</Link>
-          </li>
+          {isLoggedIn && (
+            <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
+              <Link to="profile">My Profile</Link>
+            </li>
+          )}
         </ul>
         {isLoggedIn && (
           <button

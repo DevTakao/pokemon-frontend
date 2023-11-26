@@ -42,7 +42,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
       <img
         src={pokemon?.attributes?.imageUrl}
         alt={pokemon?.attributes?.name}
-        className="object-contain outline outline-red-400 w-[75px] ml-3 sm:ml-4 md:ml-5 lg:ml-10 mr-2"
+        className="object-contain outline outline-blue-400 w-[75px] ml-3 sm:ml-4 md:ml-5 lg:ml-10 mr-2"
       />
       <span className="text-sm font-medium sm:text-lg md:text-xl">
         {pokemon?.attributes?.name}
