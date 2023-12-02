@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useAppStore } from "../store/useAppStore"
+import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const ENV = import.meta.env
 const API_URL =
@@ -15,6 +16,13 @@ const LoginPage = () => {
     identifier: "",
     password: "",
   })
+
+  const [showPassword, setShowPassword] = useState({
+    identifier: false,
+    password: false,
+  })
+
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,9 +38,12 @@ const LoginPage = () => {
         localStorage.setItem("jwtToken", jwt)
         navigate("/")
       }
-    } catch (error) {
-      console.error("Error logging in:", error.message)
+    } catch (err) {
+      console.error("Error logging in:", err.message)
       navigate("/login")
+      const errorRes = err.response
+      const errorMsg = errorRes.data.error.message
+      setError(errorMsg)
     }
   }
 
@@ -40,7 +51,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-md shadow-md">
         <h2 className="text-3xl font-extrabold text-center text-gray-800">
-          Login{" "}
+          Login
         </h2>
         <form className="mt-8 space-y-6" action="#" onSubmit={handleSubmit}>
           <div className="-space-y-px rounded-md shadow-sm">
@@ -65,26 +76,40 @@ const LoginPage = () => {
                 placeholder="example@domain.com"
               />
             </div>
-            <div className="mb-10">
+            <div className="mb-10 relative">
               <label htmlFor="password" className="block">
                 Password
               </label>
-              <input
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    password: e.target.value,
-                  }))
-                }
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Type your password here"
-              />
+              <div className="relative flex items-center">
+                <input
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
+                  id="password"
+                  name="password"
+                  type={showPassword.password ? "text" : "password"}
+                  autoComplete="current-password"
+                  required
+                  className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10"
+                  placeholder="Type your password here"
+                />
+                <button
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2 px-5 text-gray-700 bg-white-300 rounded-full"
+                  type="button"
+                  onClick={() => {
+                    setShowPassword((prev) => ({
+                      ...prev,
+                      password: !prev.password,
+                    }))
+                  }}
+                >
+                  {!showPassword.password ? <FaEye /> : <FaEyeSlash />}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -96,6 +121,7 @@ const LoginPage = () => {
               Login
             </button>
           </div>
+          {error && <p className="text-red-300 font-sm">{error}</p>}
         </form>
       </div>
     </div>
