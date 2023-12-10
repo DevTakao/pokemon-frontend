@@ -40,7 +40,7 @@ const HomePage = () => {
   }
 
   const fetchData = async () => {
-    console.log("call fetchData")
+    // console.log("call fetchData")
     try {
       setErrorMessage("")
       setIsLoading(true)
@@ -48,7 +48,7 @@ const HomePage = () => {
       const { activeSearchValue, selectedType, pageNo } = queryParams
 
       const jwt = localStorage.getItem("jwtToken")
-      console.log("jwt get =>", jwt)
+      // console.log("jwt get =>", jwt)
 
       const { data: res } = await axios.get(
         `${API_URL}/pokemons?filters[name][$containsi]=${activeSearchValue}&${

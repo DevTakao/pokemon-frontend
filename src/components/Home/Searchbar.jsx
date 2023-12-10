@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { FaSearch } from "react-icons/fa"
 import { POKEMON_TYPES } from "../../../constants"
 import { Tooltip } from "react-tooltip"

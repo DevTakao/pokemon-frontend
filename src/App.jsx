@@ -10,6 +10,7 @@ import PrivateWrapper from "./components/PrivateWrapper"
 import Navbar from "./common/Navbar"
 import AboutUsPage from "./components/AboutUs/AboutUsPage"
 import ProfilePage from "./components/MyProfile/ProfilePage"
+import ShopPage from "./components/Shop/ShopPage"
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/pokemon/:id" element={<DetailPage />} />
             <Route path="/pokemon/create" element={<CreatePage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/shop" element={<ShopPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
