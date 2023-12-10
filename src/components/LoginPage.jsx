@@ -94,7 +94,7 @@ const LoginPage = () => {
                   type={showPassword.password ? "text" : "password"}
                   autoComplete="current-password"
                   required
-                  className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10"
+                  className="w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500  sm:text-sm pr-10"
                   placeholder="Type your password here"
                 />
                 <button

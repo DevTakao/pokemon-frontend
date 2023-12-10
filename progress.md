@@ -54,4 +54,6 @@
 - [x] Add 2 More Navigation Buttons In Navigation
 - [x] React.js Test 1
 - [x] Add 2 More Pages In Navigation
-- [ ] Homework: Add eye-icon feature and error messages to Login
+- [x] Homework: Add eye-icon feature and error messages to Login
+- [ ] Homework: Clear cart on click
+- [ ] Homework: Can give quantity for "Add To Cart" feature

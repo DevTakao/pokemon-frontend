@@ -22,6 +22,11 @@ const Navbar = () => {
               <Link to="profile">My Profile</Link>
             </li>
           )}
+          {isLoggedIn && (
+            <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
+              <Link to="shop">Shop</Link>
+            </li>
+          )}
         </ul>
         {isLoggedIn && (
           <button
