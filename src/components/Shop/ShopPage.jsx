@@ -42,7 +42,6 @@ const cards = [
 const ShopPage = () => {
   const { cart, clearCart } = useAppStore()
   const [cartCount, setCartCount] = useState(0)
-  const [cartPrice, setCartPrice] = useState(0)
   console.log("cartprice", cart)
 
   // update count whenever cart is updated
@@ -55,7 +54,6 @@ const ShopPage = () => {
     console.log("price", totalPrice)
 
     setCartCount(result)
-    setCartPrice(totalPrice.toFixed(2))
   }, [cart])
 
   const getTotalPrice = () => {
