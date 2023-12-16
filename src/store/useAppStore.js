@@ -19,17 +19,16 @@ export const useAppStore = create(
       _clearStore: () => set(states),
       setIsLoggedIn: (bool) => set({ isLoggedIn: bool }),
 
-      addToCart: (cardId, amount, price) =>
+      addToCart: (card, quantity) => {
         set((prev) => {
           const existingItemIndex = prev.cart.findIndex(
-            (cartItem) => cartItem.itemId === cardId
+            (cartItem) => cartItem.itemId === card.id
           )
           console.log("This is existingIndex= ", existingItemIndex)
 
           if (existingItemIndex !== -1) {
             const updatedCart = [...prev.cart]
-            updatedCart[existingItemIndex].quantity += amount
-            updatedCart[existingItemIndex].price += price
+            updatedCart[existingItemIndex].quantity += quantity
 
             return { cart: updatedCart }
           } else {
@@ -37,14 +36,15 @@ export const useAppStore = create(
               cart: [
                 ...prev.cart,
                 {
-                  itemId: cardId,
-                  quantity: amount,
-                  price: price,
+                  itemId: card.id,
+                  quantity: quantity,
+                  price: card.price,
                 },
               ],
             }
           }
-        }),
+        })
+      },
 
       clearCart: () => set({ cart: [] }),
     }),

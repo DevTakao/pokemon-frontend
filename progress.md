@@ -55,5 +55,8 @@
 - [x] React.js Test 1
 - [x] Add 2 More Pages In Navigation
 - [x] Homework: Add eye-icon feature and error messages to Login
-- [ ] Homework: Clear cart on click
-- [ ] Homework: Can give quantity for "Add To Cart" feature
+- [x] Homework: Clear cart on click
+- [x] Homework: Can give quantity for "Add To Cart" feature
+- [x] Homework: Total price of cart items
+- [ ] Full feature of cart mechanism
+- [ ] Refactoring in React

@@ -5,7 +5,7 @@ const ProductCard = ({ card }) => {
   const { addToCart } = useAppStore()
   const [quantity, setQuantity] = useState(1)
 
-  const doAddToCart = () => addToCart(card.id, quantity, card.price)
+  const doAddToCart = () => addToCart(card, quantity)
 
   return (
     <div className="inline-block m-10 text-center border shadow-2xl Item__Card border-black-200">

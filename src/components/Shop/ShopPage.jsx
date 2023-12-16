@@ -58,13 +58,21 @@ const ShopPage = () => {
     setCartPrice(totalPrice.toFixed(2))
   }, [cart])
 
+  const getTotalPrice = () => {
+    let totalPrice = 0
+    for (const cartItem of cart) {
+      totalPrice += parseFloat(cartItem.price) * cartItem.quantity
+    }
+    return totalPrice.toFixed(2)
+  }
+
   return (
     <div>
       <div className="flex justify-end p-5 text-center">
         <div>
-          <p className="text-xl mr-10">
+          <p className="mr-10 text-xl">
             Total Price-
-            <span className="text-xl text-red-400">${cartPrice}</span>
+            <span className="text-xl text-red-400">${getTotalPrice()}</span>
           </p>
         </div>
         <div className="relative flex">
