@@ -10,7 +10,7 @@ const cards = [
       "https://c1-ebgames.eb-cdn.com.au/merchandising/images/packshots/194cf13511e64a99b4ab74a4d5319d88_Original.jpg",
     imageAlt: "Charizard",
     description: "Charizard Toy",
-    price: "12.12$",
+    price: "12.12",
   },
   {
     id: "2",
@@ -18,7 +18,7 @@ const cards = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbnbr5dCOOQEhB8CfQY-ydECE2TbbXGlh9aLY3anPUzg&s",
     imageAlt: "Bulbasaur",
     description: "Bulbasaur Toy",
-    price: "11.11$",
+    price: "11.11",
   },
   {
     id: "3",
@@ -26,7 +26,7 @@ const cards = [
       "https://www.pokemoncenter.com/images/DAMRoot/Full-Size/10000/P5073_701-03991_01.jpg",
     imageAlt: "Squritle",
     description: "Squritle Toy",
-    price: "13.13$",
+    price: "13.13",
   },
 
   {
@@ -35,33 +35,45 @@ const cards = [
       "https://wolvespokemart.co.uk/cdn/shop/products/plush-pikachu-logo_1200x1200.jpg?v=1607811506",
     imageAlt: "Pikachu",
     description: "Pikachu Toy",
-    price: "20.23$",
+    price: "20.23",
   },
 ]
 
 const ShopPage = () => {
   const { cart, clearCart } = useAppStore()
   const [cartCount, setCartCount] = useState(0)
+  const [cartPrice, setCartPrice] = useState(0)
+  console.log("cartprice", cart)
 
   // update count whenever cart is updated
   useEffect(() => {
     let result = 0
+    let totalPrice = 0
     cart.forEach((c) => (result += c.quantity))
-    console.log("result", result)
+    cart.forEach((c) => (totalPrice += c.quantity * parseFloat(c.price)))
+    // console.log("result", result)
+    console.log("price", totalPrice)
 
     setCartCount(result)
+    setCartPrice(totalPrice.toFixed(2))
   }, [cart])
 
   return (
     <div>
       <div className="flex justify-end p-5 text-center">
+        <div>
+          <p className="text-xl mr-10">
+            Total Price-
+            <span className="text-xl text-red-400">${cartPrice}</span>
+          </p>
+        </div>
         <div className="relative flex">
           <div className="flex cursor-pointer" onClick={clearCart}>
             <TfiShoppingCart size={30} />
             <p className="text-xl">My Cart</p>
           </div>
 
-          <div className="absolute  top-0 left-0 -translate-x-[50%] -translate-y-[50%] flex justify-center w-[20px] h-[20px] bg-red-500 text-sm items-center text-white rounded-full">
+          <div className="absolute top-0 left-0 -translate-x-[50%] -translate-y-[50%] flex justify-center w-[20px] h-[20px] bg-red-500 text-sm items-center text-white rounded-full">
             {cartCount >= 10 ? "9+" : cartCount}
           </div>
         </div>
