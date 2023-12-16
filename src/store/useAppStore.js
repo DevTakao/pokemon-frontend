@@ -22,7 +22,7 @@ export const useAppStore = create(
       addToCart: (card, quantity) => {
         set((prev) => {
           const existingItemIndex = prev.cart.findIndex(
-            (cartItem) => cartItem.itemId === card.id
+            (cartItem) => cartItem.id === card.id
           )
           console.log("This is existingIndex= ", existingItemIndex)
 
@@ -33,14 +33,7 @@ export const useAppStore = create(
             return { cart: updatedCart }
           } else {
             return {
-              cart: [
-                ...prev.cart,
-                {
-                  itemId: card.id,
-                  quantity: quantity,
-                  price: card.price,
-                },
-              ],
+              cart: [...prev.cart, { ...card, quantity: quantity }],
             }
           }
         })

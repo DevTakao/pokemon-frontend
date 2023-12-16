@@ -8,8 +8,8 @@ const ProductCard = ({ card }) => {
   const doAddToCart = () => addToCart(card, quantity)
 
   return (
-    <div className="inline-block m-10 text-center border shadow-2xl Item__Card border-black-200">
-      <div className="w-[200px] h-auto">
+    <div className="inline-block m-5 text-center border shadow-2xl Item__Card border-black-200">
+      <div className="w-full h-auto">
         <img
           src={card.imageUrl}
           alt={card.imageAlt}
@@ -32,7 +32,7 @@ const ProductCard = ({ card }) => {
       <button
         type="button"
         onClick={doAddToCart}
-        className="px-2 my-2 ml-2 text-lg uppercase bg-red-400 border border-black rounded-full"
+        className="w-1/2 px-2 py-2 mx-auto my-2 text-base text-white uppercase bg-blue-400 border rounded-full"
       >
         Add to Cart
       </button>

@@ -60,3 +60,6 @@
 - [x] Homework: Total price of cart items
 - [ ] Full feature of cart mechanism
 - [ ] Refactoring in React
+- [ ] Homework: increase/decrease cart quantity with buttons
+- [ ] Homework: remove from cart automatically if zero
+- [ ] Homework: card hover effect

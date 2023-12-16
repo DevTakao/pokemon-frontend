@@ -2,6 +2,7 @@ import { TfiShoppingCart } from "react-icons/tfi"
 import { useAppStore } from "../../store/useAppStore"
 import ProductCard from "./ProductCard"
 import { useEffect, useState } from "react"
+import CartModal from "./CartModal"
 // mock data
 const cards = [
   {
@@ -37,12 +38,30 @@ const cards = [
     description: "Pikachu Toy",
     price: "20.23",
   },
+  {
+    id: "5",
+    imageUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_ec58e002-031f-47bc-8cf4-60b25a782891?wid=488&hei=488&fmt=pjpeg",
+    imageAlt: "Gengar",
+    description: "Gengar Toy",
+    price: "21.23",
+  },
+  {
+    id: "6",
+    imageUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_b19fae9c-21cd-440e-b5b0-c4d71f1a7fa9?wid=488&hei=488&fmt=pjpeg",
+    imageAlt: "Jigglypuff",
+    description: "Jigglypuff Toy",
+    price: "10.13",
+  },
 ]
 
 const ShopPage = () => {
-  const { cart, clearCart } = useAppStore()
+  const { cart } = useAppStore()
   const [cartCount, setCartCount] = useState(0)
-  console.log("cartprice", cart)
+  const [open, setOpen] = useState(false)
+
+  const toggleCart = () => setOpen(!open)
 
   // update count whenever cart is updated
   useEffect(() => {
@@ -50,31 +69,16 @@ const ShopPage = () => {
     let totalPrice = 0
     cart.forEach((c) => (result += c.quantity))
     cart.forEach((c) => (totalPrice += c.quantity * parseFloat(c.price)))
-    // console.log("result", result)
-    console.log("price", totalPrice)
 
     setCartCount(result)
   }, [cart])
 
-  const getTotalPrice = () => {
-    let totalPrice = 0
-    for (const cartItem of cart) {
-      totalPrice += parseFloat(cartItem.price) * cartItem.quantity
-    }
-    return totalPrice.toFixed(2)
-  }
-
   return (
     <div>
       <div className="flex justify-end p-5 text-center">
-        <div>
-          <p className="mr-10 text-xl">
-            Total Price-
-            <span className="text-xl text-red-400">${getTotalPrice()}</span>
-          </p>
-        </div>
-        <div className="relative flex">
-          <div className="flex cursor-pointer" onClick={clearCart}>
+        <CartModal open={open} closeModal={() => setOpen(false)} />
+        <button className="relative z-0 flex">
+          <div className="flex" onClick={toggleCart}>
             <TfiShoppingCart size={30} />
             <p className="text-xl">My Cart</p>
           </div>
@@ -82,12 +86,14 @@ const ShopPage = () => {
           <div className="absolute top-0 left-0 -translate-x-[50%] -translate-y-[50%] flex justify-center w-[20px] h-[20px] bg-red-500 text-sm items-center text-white rounded-full">
             {cartCount >= 10 ? "9+" : cartCount}
           </div>
-        </div>
+        </button>
       </div>
-      <div className="bg-[#f4f4f4]">
-        <h2 className="ml-2">Items</h2>
+      <div className="text-center">
+        <h2 className="py-5 text-2xl font-semibold tracking-widest text-blue-600 bg-blue-300">
+          Soft Plushies
+        </h2>
       </div>
-      <div>
+      <div className="grid grid-cols-5">
         {cards.map((card, i) => (
           <ProductCard key={i} card={card} />
         ))}
