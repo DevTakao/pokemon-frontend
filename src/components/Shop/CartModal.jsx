@@ -49,6 +49,7 @@ const CartModal = ({ open, closeModal }) => {
     removeItem(itemId)
   }
 
+  // THUNK pattern
   const addItemHandler = (itemId) => {
     console.log("Adding item with id: ", itemId)
     addToCart(
