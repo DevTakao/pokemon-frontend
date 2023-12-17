@@ -39,6 +39,30 @@ export const useAppStore = create(
         })
       },
 
+      removeItem: (cardId) => {
+        // set((prev) => ({
+        //   cart: prev.cart.filter((cartItem) => cartItem.id !== cardId),
+        // }))
+        set((prev) => {
+          const existingItemIndex = prev.cart.findIndex(
+            (cartItem) => cartItem.id === cardId
+          )
+          console.log("This is existingIndex= ", existingItemIndex)
+
+          if (existingItemIndex !== -1) {
+            const updatedCart = [...prev.cart]
+            if (updatedCart[existingItemIndex].quantity === 1) {
+              return {
+                cart: prev.cart.filter((cartItem) => cartItem.id !== cardId),
+              }
+            } else {
+              updatedCart[existingItemIndex].quantity -= 1
+              return { cart: updatedCart }
+            }
+          }
+        })
+      },
+
       clearCart: () => set({ cart: [] }),
     }),
     {
