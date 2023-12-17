@@ -6,13 +6,15 @@ const ProductCard = ({ card }) => {
   const { addToCart } = useAppStore()
   const [quantity, setQuantity] = useState(1)
 
-  const doAddToCart = () => addToCart(card, quantity)
+  const doAddToCart = () => {
+    console.count("doAddToCart")
+    addToCart(card, quantity)
+  }
 
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      className="inline-block m-5 text-center shadow-2xl border-black rounded-md Item__Card"
+      className="inline-block m-5 text-center border-black rounded-md shadow-2xl Item__Card"
     >
       <div className="w-full h-auto ">
         <img
