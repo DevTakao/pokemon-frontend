@@ -33,7 +33,8 @@ const fadeInAnimation = {
 }
 
 const CartModal = ({ open, closeModal }) => {
-  const { cart, clearCart } = useAppStore()
+  const { cart, clearCart, addToCart, removeItem } = useAppStore()
+  console.log("cartttt= ", cart)
 
   const getTotalPrice = () => {
     let totalPrice = 0
@@ -41,6 +42,19 @@ const CartModal = ({ open, closeModal }) => {
       totalPrice += parseFloat(cartItem.price) * cartItem.quantity
     }
     return totalPrice.toFixed(2)
+  }
+
+  const removeItemHandler = (itemId) => {
+    console.log("Removing item with id: ", itemId)
+    removeItem(itemId)
+  }
+
+  const addItemHandler = (itemId) => {
+    console.log("Adding item with id: ", itemId)
+    addToCart(
+      cart.find((item) => item.id === itemId),
+      1
+    )
   }
 
   return (
@@ -80,11 +94,11 @@ const CartModal = ({ open, closeModal }) => {
                     </h3>
                   </div>
                   <div className="flex items-center justify-between text-left pl-7">
-                    <button>
+                    <button onClick={() => removeItemHandler(cartItem.id)}>
                       <FaMinus />
                     </button>
                     <span>{cartItem.quantity}</span>
-                    <button>
+                    <button onClick={() => addItemHandler(cartItem.id)}>
                       <FaPlus />
                     </button>
                   </div>
