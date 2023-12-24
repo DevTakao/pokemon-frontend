@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useAppStore } from "../store/useAppStore"
-import { FaEye, FaEyeSlash } from "react-icons/fa"
+import LoginInput from "./LoginInput"
 
 const ENV = import.meta.env
 const API_URL =
@@ -17,100 +17,85 @@ const LoginPage = () => {
     password: "",
   })
 
-  const [showPassword, setShowPassword] = useState({
-    identifier: false,
-    password: false,
-  })
-
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+
+  const handleAfterLogin = async (response) => {
+    setIsLoggedIn(true)
+    const { jwt } = await response.data
+    localStorage.setItem("jwtToken", jwt)
+  }
+  const goToHomePage = () => navigate("/")
+  const redirectToLoginPage = () => navigate("/login")
+  const showErrorMsg = (err) => {
+    setError(err.message)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("log in with", formData)
-
     try {
       const response = await axios.post(`${API_URL}/auth/local`, formData)
 
       if (response.status === 200) {
         // login success
-        setIsLoggedIn(true)
-        const { jwt } = await response.data
-        localStorage.setItem("jwtToken", jwt)
-        navigate("/")
+        handleAfterLogin(response)
+        goToHomePage()
       }
     } catch (err) {
+      // login fail
       console.error("Error logging in:", err.message)
-      navigate("/login")
-      const errorRes = err.response
-      const errorMsg = errorRes.data.error.message
-      setError(errorMsg)
+      redirectToLoginPage()
+      showErrorMsg(err)
     }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-md shadow-md">
+    <div className="Page__Container flex items-center justify-center min-h-screen bg-gray-300">
+      <div className="Form__Container w-full max-w-md p-8 space-y-8 bg-white rounded-md shadow-md">
         <h2 className="text-3xl font-extrabold text-center text-gray-800">
           Login
         </h2>
         <form className="mt-8 space-y-6" action="#" onSubmit={handleSubmit}>
           <div className="-space-y-px rounded-md shadow-sm">
-            <div className="mb-5">
-              <label htmlFor="email" className="block">
-                Username
-              </label>
-              <input
-                value={formData.identifier}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    identifier: e.target.value,
-                  }))
-                }
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="example@domain.com"
-              />
-            </div>
-            <div className="relative mb-10">
-              <label htmlFor="password" className="block">
-                Password
-              </label>
-              <div className="relative flex items-center">
-                <input
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      password: e.target.value,
-                    }))
-                  }
-                  id="password"
-                  name="password"
-                  type={showPassword.password ? "text" : "password"}
-                  autoComplete="current-password"
-                  required
-                  className="w-full px-3 py-2 pr-16 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Type your password here"
-                />
-                <button
-                  className="absolute px-5 text-gray-700 transform -translate-y-1/2 rounded-full top-1/2 right-2 bg-white-300"
-                  type="button"
-                  onClick={() => {
-                    setShowPassword((prev) => ({
-                      ...prev,
-                      password: !prev.password,
-                    }))
-                  }}
-                >
-                  {!showPassword.password ? <FaEye /> : <FaEyeSlash />}
-                </button>
-              </div>
-            </div>
+            <LoginInput
+              label={"Username"}
+              inputValue={formData.identifier}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  identifier: e.target.value,
+                }))
+              }
+              inputAttributes={{
+                id: "email",
+                name: "email",
+                type: "email",
+                autoComplete: "email",
+                required: true,
+                placeholder: "example@domain.com",
+              }}
+            />
+            <LoginInput
+              label={"Password"}
+              inputValue={formData.password}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  password: e.target.value,
+                }))
+              }
+              inputAttributes={{
+                id: "password",
+                name: "password",
+                type: showPassword ? "text" : "password",
+                autoComplete: "password",
+                required: true,
+                placeholder: "Type your password here",
+              }}
+              isPassword={true}
+              showPassword={showPassword}
+              setShowPassword={() => setShowPassword(!showPassword)}
+            />
           </div>
 
           <div>
