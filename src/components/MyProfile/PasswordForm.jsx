@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
-import { FaEye, FaEyeSlash } from "react-icons/fa"
+import PasswordInput from "./PasswordInput"
+// import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const ENV = import.meta.env
 const API_URL =
@@ -48,87 +49,53 @@ const PasswordForm = () => {
     <div className="p-10 my-10 border border-gray-300">
       <h2 className="my-5 text-xl font-medium text-center">Change Password</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* First input with eye icon */}
-        <div className="flex justify-between">
-          <input
-            value={formData.currentPassword}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                currentPassword: e.target.value,
-              }))
-            }
-            name="currentPassword"
-            className="w-full px-6 py-2 border-2 border-green-300 rounded-l-full"
-            type={showPassword.currentPassword ? "text" : "password"}
-            placeholder="Your current password"
-          />
-          <button
-            className="px-5 text-green-700 bg-green-300 rounded-r-full"
-            type="button"
-            onClick={() =>
-              setShowPassword((prev) => ({
-                ...prev,
-                currentPassword: !prev.currentPassword,
-              }))
-            }
-          >
-            {!showPassword.currentPassword ? <FaEye /> : <FaEyeSlash />}
-          </button>
-        </div>
+        <PasswordInput
+          value={formData.currentPassword}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              currentPassword: e.target.value,
+            }))
+          }
+          showPassword={showPassword.currentPassword}
+          onToggleShowPassword={() =>
+            setShowPassword((prev) => ({
+              ...prev,
+              currentPassword: !prev.currentPassword,
+            }))
+          }
+          placeholder="Your current password"
+        />
 
-        <div className="flex justify-between">
-          <input
-            value={formData.password}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, password: e.target.value }))
-            }
-            name="password"
-            className="w-full px-6 py-2 border-2 border-green-300 rounded-l-full"
-            type={showPassword.password ? "text" : "password"}
-            placeholder="Your new password"
-          />
-          <button
-            className="px-5 text-green-700 bg-green-300 rounded-r-full"
-            type="button"
-            onClick={() =>
-              setShowPassword((prev) => ({
-                ...prev,
-                password: !prev.password,
-              }))
-            }
-          >
-            {!showPassword.password ? <FaEye /> : <FaEyeSlash />}
-          </button>
-        </div>
+        <PasswordInput
+          value={formData.password}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, password: e.target.value }))
+          }
+          showPassword={showPassword.password}
+          onToggleShowPassword={() =>
+            setShowPassword((prev) => ({ ...prev, password: !prev.password }))
+          }
+          placeholder="Your new password"
+        />
 
-        <div className="flex justify-between">
-          <input
-            value={formData.passwordConfirmation}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                passwordConfirmation: e.target.value,
-              }))
-            }
-            name="passwordConfirmation"
-            className="w-full px-6 py-2 border-2 border-green-300 rounded-l-full"
-            type={showPassword.passwordConfirmation ? "text" : "password"}
-            placeholder="Your new password again"
-          />
-          <button
-            className="px-5 text-green-700 bg-green-300 rounded-r-full"
-            type="button"
-            onClick={() =>
-              setShowPassword((prev) => ({
-                ...prev,
-                passwordConfirmation: !prev.passwordConfirmation,
-              }))
-            }
-          >
-            {!showPassword.passwordConfirmation ? <FaEye /> : <FaEyeSlash />}
-          </button>
-        </div>
+        <PasswordInput
+          value={formData.passwordConfirmation}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              passwordConfirmation: e.target.value,
+            }))
+          }
+          showPassword={showPassword.passwordConfirmation}
+          onToggleShowPassword={() =>
+            setShowPassword((prev) => ({
+              ...prev,
+              passwordConfirmation: !prev.passwordConfirmation,
+            }))
+          }
+          placeholder="Your new password again"
+        />
 
         {error && <p className="text-red-300 font-sm">{error}</p>}
         <button
