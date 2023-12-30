@@ -58,8 +58,12 @@
 - [x] Homework: Clear cart on click
 - [x] Homework: Can give quantity for "Add To Cart" feature
 - [x] Homework: Total price of cart items
-- [ ] Full feature of cart mechanism
-- [ ] Refactoring in React
-- [ ] Homework: increase/decrease cart quantity with buttons
-- [ ] Homework: remove from cart automatically if zero
-- [ ] Homework: card hover effect
+- [x] Full feature of cart mechanism
+- [x] Refactoring in React
+- [ ] Refactor project
+- [x] Homework: increase/decrease cart quantity with buttons
+- [x] Homework: remove from cart automatically if zero
+- [x] Homework: card hover effect
+- [x] Homework: refactor Profile page
+- [ ] Homework: refactor Detail page
+- [ ] Homework: refactor Create page
