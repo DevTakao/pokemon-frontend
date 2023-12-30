@@ -5,7 +5,12 @@ import PokemonCard from "./PokemonCard"
 import Pagination from "../../common/Pagination"
 import { useNavigate } from "react-router"
 import Searchbar from "./Searchbar"
-import { ImCross } from "react-icons/im"
+import CurrentResultText from "./CurrentResultText"
+import ErrorMessage from "../../common/ErrorMessage"
+import RoundedButton from "../../common/RoundedButton"
+import { getJwt } from "../../utility/jwt"
+import qs from "qs"
+import { goNext, goPrev, goToPage } from "./helpers/paginationFns"
 
 const ENV = import.meta.env
 const API_URL =
@@ -13,9 +18,14 @@ const API_URL =
 
 const HomePage = () => {
   const pageSize = 5
+  const defaultQueryParams = {
+    activeSearchValue: "",
+    selectedType: "ANY",
+    pageNo: 1,
+  }
+  const navigate = useNavigate()
 
   const [data, setData] = useState([])
-  // const [pageNo, setPageNo] = useState(1)
   const [isFirstPage, setIsFirstPage] = useState(true)
   const [isLastPage, setIsLastPage] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
@@ -26,13 +36,7 @@ const HomePage = () => {
   // query
   const [inputValue, setInputValue] = useState("") // input box data
   const [selectedType, setSelectedType] = useState("ANY") // input dropdown data
-  const [queryParams, setQueryParams] = useState({
-    activeSearchValue: "",
-    selectedType: "ANY",
-    pageNo: 1,
-  }) // search parameters
-
-  const navigate = useNavigate()
+  const [queryParams, setQueryParams] = useState(defaultQueryParams) // search parameters
 
   const calcPageCount = () => {
     const pc = Math.ceil(totalItems / pageSize)
@@ -40,27 +44,35 @@ const HomePage = () => {
   }
 
   const fetchData = async () => {
-    // console.log("call fetchData")
     try {
       setErrorMessage("")
       setIsLoading(true)
 
       const { activeSearchValue, selectedType, pageNo } = queryParams
 
-      const jwt = localStorage.getItem("jwtToken")
-      // console.log("jwt get =>", jwt)
+      const jwt = getJwt()
 
+      const params = {
+        filters: {
+          name: { $containsi: activeSearchValue },
+          type: selectedType === "ANY" ? undefined : { $eqi: selectedType },
+        },
+        pagination: {
+          pageSize: pageSize,
+          page: pageNo,
+        },
+        sort: ["name:asc"],
+      }
+
+      const queryString = qs.stringify(params, { encodeValuesOnly: true })
       const { data: res } = await axios.get(
-        `${API_URL}/pokemons?filters[name][$containsi]=${activeSearchValue}&${
-          selectedType === "ANY" ? "" : `filters[type][$eqi]=${selectedType}&`
-        }pagination[pageSize]=${pageSize}&pagination[page]=${pageNo}&sort[0]=name:asc`,
+        `${API_URL}/pokemons?${queryString}`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
           },
         }
       )
-
       const data = res.data
       const pagination = res.meta.pagination
 
@@ -70,7 +82,6 @@ const HomePage = () => {
       setTotalItems(pagination.total)
     } catch (err) {
       setErrorMessage(JSON.stringify(err.message))
-      console.log("Error")
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -78,7 +89,6 @@ const HomePage = () => {
   }
 
   const handleSearch = () => {
-    console.log(inputValue, selectedType)
     setQueryParams((prev) => ({
       ...prev,
       activeSearchValue: inputValue,
@@ -87,33 +97,13 @@ const HomePage = () => {
   }
 
   const searchClear = () => {
-    setQueryParams({
-      activeSearchValue: "",
-      selectedType: "ANY",
-      pageNo: 1,
-    })
+    setQueryParams(defaultQueryParams)
     setInputValue("")
     setSelectedType("ANY")
   }
 
-  const goPrev = () => {
-    setQueryParams((prev) => ({ ...prev, pageNo: prev.pageNo - 1 }))
-  }
-
-  const goNext = () => {
-    setQueryParams((prev) => ({ ...prev, pageNo: prev.pageNo + 1 }))
-  }
-
-  const goToPage = (pageNo) => {
-    setQueryParams((prev) => ({ ...prev, pageNo: pageNo }))
-  }
-
-  const goToDetails = (id) => {
-    navigate(`/pokemon/${id}`)
-  }
-
-  const goToCreatePage = () => {
-    navigate("/pokemon/create")
+  const goTo = (page) => {
+    navigate(`/pokemon/${page}`)
   }
 
   useEffect(() => {
@@ -137,29 +127,21 @@ const HomePage = () => {
         selectedType={selectedType}
         setSelectedType={setSelectedType}
       />
-
-      {queryParams.activeSearchValue && (
-        <div className="flex mb-2 text-blue-400">
-          <p>Showing results for : {queryParams.activeSearchValue}</p>
-          <button
-            className="flex px-3 ml-2 border border-black rounded-full"
-            onClick={searchClear}
-          >
-            <ImCross className="m-auto" /> Clear
-          </button>
-        </div>
-      )}
-
-      {isLoading && <Loading />}
-      {!!errorMessage && <p className="my-5 text-red-400">{errorMessage}</p>}
-
+      <CurrentResultText
+        activeSearchValue={queryParams.activeSearchValue}
+        clear={searchClear}
+      />
+      <Loading show={isLoading} />
+      <ErrorMessage message={errorMessage} />
       <Pagination
+        goPrev={() => goPrev({ set: setQueryParams })}
+        goNext={() => goNext({ set: setQueryParams })}
+        handlePageChange={(pageNo) =>
+          goToPage({ set: setQueryParams, pageNo: pageNo })
+        }
         pageCount={pageCount}
-        goPrev={goPrev}
-        goNext={goNext}
         isFirstPage={isFirstPage}
         isLastPage={isLastPage}
-        handlePageChange={(pageNo) => goToPage(pageNo)}
         currentPage={queryParams.pageNo}
       />
 
@@ -171,7 +153,7 @@ const HomePage = () => {
                 key={pokemon.id}
                 pokemon={pokemon}
                 fetchData={fetchData}
-                handleClick={() => goToDetails(pokemon.id)}
+                handleClick={() => goTo(pokemon.id)}
               />
             ))}
         </div>
@@ -179,13 +161,7 @@ const HomePage = () => {
         <p className="my-10 text-center">No results found.</p>
       )}
 
-      <button
-        onClick={goToCreatePage}
-        type="button"
-        className="block py-4 mx-auto text-white bg-pink-400 rounded-full px-7"
-      >
-        Create
-      </button>
+      <RoundedButton label="Create" handleClick={() => goTo("create")} />
     </div>
   )
 }
