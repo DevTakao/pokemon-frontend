@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
 import PasswordInput from "./PasswordInput"
+import { getJwt } from "../../utility/jwt"
 // import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const ENV = import.meta.env
@@ -18,7 +19,7 @@ const PasswordForm = () => {
 
   const changePassword = async () => {
     try {
-      const jwt = localStorage.getItem("jwtToken")
+      const jwt = getJwt()
       await axios.post(`${API_URL}/auth/change-password`, formData, {
         headers: {
           Authorization: `Bearer ${jwt}`,

@@ -1,6 +1,7 @@
 import axios from "axios"
 import PokemonCreateForm from "./PokemonCreateForm"
 import { useNavigate } from "react-router"
+import { getJwt } from "../../utility/jwt"
 
 const ENV = import.meta.env
 const API_URL =
@@ -15,7 +16,7 @@ const CreatePage = () => {
         throw new Error("Name and type are required")
       }
 
-      const jwt = localStorage.getItem("jwtToken")
+      const jwt = getJwt()
       const res = await axios.post(
         `${API_URL}/pokemons`,
         { data: formData },

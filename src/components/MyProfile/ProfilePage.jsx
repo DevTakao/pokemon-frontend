@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import PasswordForm from "./PasswordForm"
+import { getJwt } from "../../utility/jwt"
 
 const ENV = import.meta.env
 const API_URL =
@@ -15,7 +16,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const jwt = localStorage.getItem("jwtToken")
+        const jwt = getJwt()
         const { data } = await axios.get(`${API_URL}/users/me`, {
           headers: {
             Authorization: `Bearer ${jwt}`,

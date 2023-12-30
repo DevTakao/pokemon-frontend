@@ -5,6 +5,7 @@ import MissingNoImage from "../../assets/missingno.png"
 import Loading from "../../common/Loading"
 import PokemonEditForm from "./PokemonEditForm"
 import ConfirmDeletePopup from "./ConfirmDeletePopup"
+import { getJwt } from "../../utility/jwt"
 
 const ENV = import.meta.env
 const API_URL =
@@ -29,7 +30,7 @@ const DetailPage = () => {
   const fetchDetails = async () => {
     setIsLoading(true)
     try {
-      const jwt = localStorage.getItem("jwtToken")
+      const jwt = getJwt()
       const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -51,7 +52,7 @@ const DetailPage = () => {
       }
 
       if (pokemon) {
-        const jwt = localStorage.getItem("jwtToken")
+        const jwt = getJwt()
         const res = await axios.put(
           `${API_URL}/pokemons/${id}`,
           {
@@ -79,7 +80,7 @@ const DetailPage = () => {
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        const jwt = localStorage.getItem("jwtToken")
+        const jwt = getJwt()
         const res = await axios.delete(`${API_URL}/pokemons/${id}`, {
           headers: {
             Authorization: `Bearer ${jwt}`,

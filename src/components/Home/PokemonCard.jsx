@@ -4,6 +4,7 @@ import { MdDelete } from "react-icons/md"
 import { Tooltip } from "react-tooltip"
 import ConfirmDeletePopup from "../Detail/ConfirmDeletePopup"
 import axios from "axios"
+import { getJwt } from "../../utility/jwt"
 
 const ENV = import.meta.env
 const API_URL =
@@ -17,7 +18,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
   const deletePokemon = async () => {
     try {
       if (pokemon) {
-        const jwt = localStorage.getItem("jwtToken")
+        const jwt = getJwt()
         await axios.delete(`${API_URL}/pokemons/${pokemon.id}`, {
           headers: {
             Authorization: `Bearer ${jwt}`,
