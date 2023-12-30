@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const LoginInput = ({
@@ -6,9 +7,17 @@ const LoginInput = ({
   onChange,
   inputAttributes,
   isPassword = false,
-  showPassword = false,
-  setShowPassword = () => {},
 }) => {
+  const [showPassword, setShowPassword] = useState(false)
+
+  const getInputType = () => {
+    if (!isPassword) {
+      return "text"
+    } else {
+      return showPassword ? "text" : "password"
+    }
+  }
+
   return (
     <div className="mb-5">
       <label htmlFor="email" className="block">
@@ -16,6 +25,7 @@ const LoginInput = ({
       </label>
       <div className="relative flex items-center">
         <input
+          type={getInputType()}
           value={inputValue}
           onChange={onChange}
           {...inputAttributes}
@@ -25,7 +35,7 @@ const LoginInput = ({
           <button
             className="absolute px-5 text-gray-700 transform -translate-y-1/2 rounded-full top-1/2 right-2 bg-white-300 z-10"
             type="button"
-            onClick={setShowPassword}
+            onClick={() => setShowPassword(!showPassword)}
           >
             {!showPassword ? <FaEye /> : <FaEyeSlash />}
           </button>

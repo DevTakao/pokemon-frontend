@@ -17,7 +17,6 @@ const LoginPage = () => {
     password: "",
   })
 
-  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
 
   const handleAfterLogin = async (response) => {
@@ -87,14 +86,11 @@ const LoginPage = () => {
               inputAttributes={{
                 id: "password",
                 name: "password",
-                type: showPassword ? "text" : "password",
                 autoComplete: "password",
                 required: true,
                 placeholder: "Type your password here",
               }}
               isPassword={true}
-              showPassword={showPassword}
-              setShowPassword={() => setShowPassword(!showPassword)}
             />
           </div>
 

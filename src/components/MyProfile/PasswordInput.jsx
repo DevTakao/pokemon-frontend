@@ -1,12 +1,9 @@
+import { useState } from "react"
 import { FaEye, FaEyeSlash } from "react-icons/fa"
 
-const PasswordInput = ({
-  value,
-  onChange,
-  showPassword,
-  onToggleShowPassword,
-  placeholder,
-}) => {
+const PasswordInput = ({ value, onChange, placeholder }) => {
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <div className="flex justify-between">
       <input
@@ -19,7 +16,7 @@ const PasswordInput = ({
       <button
         className="px-5 text-green-700 bg-green-300 rounded-r-full"
         type="button"
-        onClick={onToggleShowPassword}
+        onClick={() => setShowPassword(!showPassword)}
       >
         {showPassword ? <FaEye /> : <FaEyeSlash />}
       </button>

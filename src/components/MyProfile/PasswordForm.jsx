@@ -14,12 +14,6 @@ const PasswordForm = () => {
     passwordConfirmation: "",
   })
 
-  const [showPassword, setShowPassword] = useState({
-    currentPassword: false,
-    password: false,
-    passwordConfirmation: false,
-  })
-
   const [error, setError] = useState("")
 
   const changePassword = async () => {
@@ -57,13 +51,6 @@ const PasswordForm = () => {
               currentPassword: e.target.value,
             }))
           }
-          showPassword={showPassword.currentPassword}
-          onToggleShowPassword={() =>
-            setShowPassword((prev) => ({
-              ...prev,
-              currentPassword: !prev.currentPassword,
-            }))
-          }
           placeholder="Your current password"
         />
 
@@ -71,10 +58,6 @@ const PasswordForm = () => {
           value={formData.password}
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, password: e.target.value }))
-          }
-          showPassword={showPassword.password}
-          onToggleShowPassword={() =>
-            setShowPassword((prev) => ({ ...prev, password: !prev.password }))
           }
           placeholder="Your new password"
         />
@@ -85,13 +68,6 @@ const PasswordForm = () => {
             setFormData((prev) => ({
               ...prev,
               passwordConfirmation: e.target.value,
-            }))
-          }
-          showPassword={showPassword.passwordConfirmation}
-          onToggleShowPassword={() =>
-            setShowPassword((prev) => ({
-              ...prev,
-              passwordConfirmation: !prev.passwordConfirmation,
             }))
           }
           placeholder="Your new password again"
