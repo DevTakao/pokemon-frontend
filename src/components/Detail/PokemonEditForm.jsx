@@ -1,21 +1,65 @@
 import { useEffect, useState } from "react"
+import axios from "axios"
+import { getJwt } from "../../utility/jwt"
 import { POKEMON_TYPES } from "../../../constants"
+import { useParams } from "react-router"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
-const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
-  // console.log("initialValues in edit form", initialValues)
+const ENV = import.meta.env
+const API_URL =
+  ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL
+
+const PokemonEditForm = ({
+  initialValues,
+  handleDelete,
+  fetchDetails,
+  setErrorMessage,
+}) => {
   const [formData, setFormData] = useState()
+  const { id } = useParams()
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const updatePokemon = async (formData) => {
+    try {
+      if (!formData.name || !formData.type) {
+        throw new Error("Name and type are required")
+      }
+
+      if (initialValues) {
+        const jwt = getJwt()
+        const res = await axios.put(
+          `${API_URL}/pokemons/${id}`,
+          {
+            data: formData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        )
+        console.log("PUT res", res)
+      } else {
+        console.log("no data to update")
+      }
+    } catch (err) {
+      setErrorMessage(JSON.stringify(err.message))
+      console.error(err)
+    } finally {
+      await fetchDetails()
+    }
+  }
 
   const submitForm = (e) => {
     e.preventDefault()
-
-    console.log("formData", formData)
-    handleSubmit(formData)
+    updatePokemon(formData)
   }
 
   const resetForm = () => {
-    console.log("reset")
     setFormData(initialValues)
   }
 
@@ -39,9 +83,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           placeholder="Pikachu"
           name="pokemonName"
           value={formData.name}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, name: event.target.value }))
-          }
+          onChange={(e) => handleChange("name", e.target.value)}
           className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
         />
       </div>
@@ -55,9 +97,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
         </label>
         <select
           value={formData.type}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, type: event.target.value }))
-          }
+          onChange={(e) => handleChange("type", e.target.value)}
           className="px-4 py-2 mx-3 bg-blue-300 rounded-full"
         >
           {SANITIZED_POKEMON_TYPES.map((type, i) => (
@@ -78,9 +118,7 @@ const PokemonEditForm = ({ initialValues, handleSubmit, handleDelete }) => {
           placeholder="Electric"
           name="pokemonImageUrl"
           value={formData.imageUrl}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))
-          }
+          onChange={(e) => handleChange("imageUrl", e.target.value)}
           className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
         />
       </div>

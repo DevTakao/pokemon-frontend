@@ -1,23 +1,57 @@
 import { useState } from "react"
+import axios from "axios"
+import { getJwt } from "../../utility/jwt"
 import { POKEMON_TYPES } from "../../../constants"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
-const PokemonEditForm = ({ handleSubmit }) => {
+const ENV = import.meta.env
+const API_URL =
+  ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL
+
+const PokemonEditForm = () => {
   const initialValues = {
     name: "",
     type: "",
     imageUrl: "",
   }
-
-  console.log("initialValues in edit form", initialValues)
   const [formData, setFormData] = useState(initialValues)
+
+  const createPokemon = async (formData) => {
+    try {
+      if (!formData.name || !formData.type) {
+        throw new Error("Name and type are required")
+      }
+
+      const jwt = getJwt()
+      const res = await axios.post(
+        `${API_URL}/pokemons`,
+        { data: formData },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+
+      if (res.status === 200) {
+        alert("Success")
+      }
+    } catch (err) {
+      console.log("Error")
+      console.error(err)
+    }
+  }
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
 
   const submitForm = (e) => {
     e.preventDefault()
 
     console.log("formData", formData)
-    handleSubmit(formData)
+    createPokemon(formData)
   }
 
   const resetForm = () => {
@@ -45,9 +79,7 @@ const PokemonEditForm = ({ handleSubmit }) => {
           placeholder="Pikachu"
           name="pokemonName"
           value={formData.name}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, name: event.target.value }))
-          }
+          onChange={(e) => handleChange("name", e.target.value)}
           className="border border-pink-300 rounded-lg bg-pink-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>
@@ -84,9 +116,7 @@ const PokemonEditForm = ({ handleSubmit }) => {
           placeholder="www..."
           name="pokemonImageUrl"
           value={formData.imageUrl}
-          onChange={(event) =>
-            setFormData((prev) => ({ ...prev, imageUrl: event.target.value }))
-          }
+          onChange={(e) => handleChange("imageUrl", e.target.value)}
           className="border border-pink-300 rounded-lg bg-pink-200 text-black px-3 py-2 my-4 mx-3 placeholder:text-white"
         />
       </div>

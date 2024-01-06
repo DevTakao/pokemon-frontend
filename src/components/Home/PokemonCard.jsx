@@ -3,37 +3,12 @@ import { MdEdit } from "react-icons/md"
 import { MdDelete } from "react-icons/md"
 import { Tooltip } from "react-tooltip"
 import ConfirmDeletePopup from "../Detail/ConfirmDeletePopup"
-import axios from "axios"
-import { getJwt } from "../../utility/jwt"
-
-const ENV = import.meta.env
-const API_URL =
-  ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL
 
 const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
   const [boxShow, setBoxShow] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
 
   const toggleBoxShow = () => setBoxShow(!boxShow)
-  const deletePokemon = async () => {
-    try {
-      if (pokemon) {
-        const jwt = getJwt()
-        await axios.delete(`${API_URL}/pokemons/${pokemon.id}`, {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        })
-      } else {
-        throw new Error("The data to delete does not exist")
-      }
-    } catch (err) {
-      setErrorMessage(JSON.stringify(err.message))
-      console.error(err)
-    } finally {
-      fetchData()
-    }
-  }
 
   return (
     <div
@@ -67,7 +42,9 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
           <ConfirmDeletePopup
             showBox={boxShow}
             onClose={toggleBoxShow}
-            onDelete={deletePokemon}
+            pokemon={pokemon}
+            setErrorMessage={setErrorMessage}
+            fetchDetails={fetchData}
           />
         )}
         <Tooltip id="delete-tooltip" />
