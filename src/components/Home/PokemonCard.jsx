@@ -42,7 +42,7 @@ const PokemonCard = ({ pokemon, handleClick, fetchData }) => {
           <ConfirmDeletePopup
             showBox={boxShow}
             onClose={toggleBoxShow}
-            pokemon={pokemon}
+            pokemonId={pokemon.id}
             setErrorMessage={setErrorMessage}
             fetchDetails={fetchData}
           />

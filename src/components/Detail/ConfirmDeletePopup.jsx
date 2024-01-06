@@ -10,38 +10,40 @@ const ConfirmDeletePopup = ({
   showBox,
   onClose,
   setErrorMessage,
-  pokemon,
+  pokemonId,
   fetchDetails,
 }) => {
-  console.log("pokemon From Pokemoncard= ", pokemon)
+  console.log("pokemonId From Pokemoncard= ", pokemonId)
   const { id } = useParams()
   const navigate = useNavigate()
 
   const deletePokemon = async () => {
     try {
-      if (pokemon) {
-        const jwt = getJwt()
-        const res = await axios.delete(
-          `${API_URL}/pokemons/${pokemon.id || id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        )
-        console.log("DELETE res", res)
-      } else {
-        console.log("no data to delete")
+      if (!pokemonId && !id) {
+        throw new Error("no data to delete")
       }
+
+      console.log("Mingalarpar :)")
+      const jwt = getJwt()
+      const res = await axios.delete(`${API_URL}/pokemons/${pokemonId || id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+      console.log("DELETE res", res)
+
       // go back to list page
       navigate("/")
     } catch (err) {
       setErrorMessage(JSON.stringify(err.message))
       console.error(err)
     } finally {
-      await fetchDetails()
+      if (pokemonId) {
+        await fetchDetails()
+      }
     }
   }
+
   return (
     showBox && (
       <div

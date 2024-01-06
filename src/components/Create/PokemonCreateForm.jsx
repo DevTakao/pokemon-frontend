@@ -12,7 +12,7 @@ const API_URL =
 const PokemonEditForm = () => {
   const initialValues = {
     name: "",
-    type: "",
+    type: "fire",
     imageUrl: "",
   }
   const [formData, setFormData] = useState(initialValues)

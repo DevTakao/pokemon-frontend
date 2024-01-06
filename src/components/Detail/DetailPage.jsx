@@ -64,7 +64,6 @@ const DetailPage = () => {
 
       <ConfirmDeletePopup
         showBox={boxShow}
-        pokemon={pokemon}
         setErrorMessage={setErrorMessage}
         fetchDetails={fetchDetails}
         onClose={toggleBoxShow}
