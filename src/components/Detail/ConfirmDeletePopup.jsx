@@ -1,6 +1,7 @@
-import axios from "axios"
-import { getJwt } from "../../utility/jwt"
+// import axios from "axios"
+// import { getJwt } from "../../utility/jwt"
 import { useNavigate, useParams } from "react-router"
+import useAPI from "../../hooks/useAPI"
 
 const ENV = import.meta.env
 const API_URL =
@@ -17,19 +18,22 @@ const ConfirmDeletePopup = ({
   const { id } = useParams()
   const navigate = useNavigate()
 
+  const { action: deleteAction, error } = useAPI({
+    method: "deleteadnsondweiln",
+    url: `${API_URL}/pokemons/${pokemonId || id}`,
+  })
+
   const deletePokemon = async () => {
     try {
+      if (error) {
+        throw error
+      }
+
       if (!pokemonId && !id) {
         throw new Error("no data to delete")
       }
 
-      console.log("Mingalarpar :)")
-      const jwt = getJwt()
-      const res = await axios.delete(`${API_URL}/pokemons/${pokemonId || id}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+      const { data: res } = await deleteAction()
       console.log("DELETE res", res)
 
       // go back to list page

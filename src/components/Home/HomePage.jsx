@@ -1,4 +1,4 @@
-import axios from "axios"
+// import axios from "axios"
 import { useEffect, useState } from "react"
 import Loading from "../../common/Loading"
 import PokemonCard from "./PokemonCard"
@@ -8,9 +8,10 @@ import Searchbar from "./Searchbar"
 import CurrentResultText from "./CurrentResultText"
 import ErrorMessage from "../../common/ErrorMessage"
 import RoundedButton from "../../common/RoundedButton"
-import { getJwt } from "../../utility/jwt"
+// import { getJwt } from "../../utility/jwt"
 import qs from "qs"
 import { goNext, goPrev, goToPage } from "./helpers/paginationFns"
+import useAPI from "../../hooks/useAPI"
 
 const ENV = import.meta.env
 const API_URL =
@@ -38,6 +39,27 @@ const HomePage = () => {
   const [selectedType, setSelectedType] = useState("ANY") // input dropdown data
   const [queryParams, setQueryParams] = useState(defaultQueryParams) // search parameters
 
+  // custom hook
+  const { activeSearchValue, selectedType: qpType, pageNo } = queryParams
+  const params = {
+    filters: {
+      name: { $containsi: activeSearchValue },
+      type: qpType === "ANY" ? undefined : { $eqi: qpType },
+    },
+    pagination: {
+      pageSize: pageSize,
+      page: pageNo,
+    },
+    sort: ["name:asc"],
+  }
+
+  const queryString = qs.stringify(params, { encodeValuesOnly: true })
+
+  const { action: fetchAction } = useAPI({
+    method: "get",
+    url: `${API_URL}/pokemons?${queryString}`,
+  })
+
   const calcPageCount = () => {
     const pc = Math.ceil(totalItems / pageSize)
     setPageCount(pc)
@@ -48,33 +70,9 @@ const HomePage = () => {
       setErrorMessage("")
       setIsLoading(true)
 
-      const { activeSearchValue, selectedType, pageNo } = queryParams
-
-      const jwt = getJwt()
-
-      const params = {
-        filters: {
-          name: { $containsi: activeSearchValue },
-          type: selectedType === "ANY" ? undefined : { $eqi: selectedType },
-        },
-        pagination: {
-          pageSize: pageSize,
-          page: pageNo,
-        },
-        sort: ["name:asc"],
-      }
-
-      const queryString = qs.stringify(params, { encodeValuesOnly: true })
-      const { data: res } = await axios.get(
-        `${API_URL}/pokemons?${queryString}`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      )
-      const data = res.data
-      const pagination = res.meta.pagination
+      const { data: response } = await fetchAction()
+      const data = response.data
+      const pagination = response.meta.pagination
 
       setData(data)
       setIsFirstPage(pagination.page === 1)
