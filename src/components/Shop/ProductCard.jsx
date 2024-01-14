@@ -1,25 +1,26 @@
-import { useReducer } from "react"
+import { useReducer, useState } from "react"
 import { motion } from "framer-motion"
 
 const ProductCard = ({ card }) => {
+  const [quantity, setQuantity] = useState(1)
+
   const reducerFunc = (state, action) => {
-    console.log("🚀 -> reducerFunc -> state:", state)
     if (action.type === "ADD") {
       const existingItemIndex = state.card.findIndex(
-        (cartItem) => cartItem.id === action.payload
+        (cartItem) => cartItem.id === card.id
       )
       console.log("This is existingIndex= ", existingItemIndex)
-
+      console.log("this is card: ", card)
+      console.log("this is quantity: ", quantity)
       if (existingItemIndex !== -1) {
-        console.log("if")
         const updatedCart = [...state.card]
-        updatedCart[existingItemIndex].quantity += state.card.quantity
+        updatedCart[existingItemIndex].quantity += state.quantity
 
-        return { card: updatedCart }
+        return { card: updatedCart, quantity: state.quantity }
       } else {
-        console.log("else state", state)
         return {
           card: [...state.card, { ...card, quantity: state.quantity }],
+          quantity: state.quantity,
         }
       }
     }
@@ -27,10 +28,9 @@ const ProductCard = ({ card }) => {
 
   const [state, dispatch] = useReducer(reducerFunc, {
     card: [],
-    quantity: 1,
+    quantity: quantity,
   })
 
-  console.log("state", state)
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
@@ -58,7 +58,7 @@ const ProductCard = ({ card }) => {
       </div>
       <button
         type="button"
-        onClick={() => dispatch({ type: "ADD", payload: card.id })}
+        onClick={() => dispatch({ type: "ADD" })}
         className="w-1/2 px-2 py-2 mx-auto my-2 text-base text-white uppercase bg-blue-400 border rounded-full"
       >
         Add to Cart
