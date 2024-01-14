@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
-import { getJwt } from "../../utility/jwt"
 import { POKEMON_TYPES } from "../../../constants"
 import { useParams } from "react-router"
+import useAPI from "../../hooks/useAPI"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
@@ -22,26 +21,23 @@ const PokemonEditForm = ({
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
+  const { action: updateAction, error } = useAPI({
+    method: "put",
+    url: `${API_URL}/pokemons/${id}`,
+    data: { data: formData },
+  })
 
   const updatePokemon = async (formData) => {
     try {
+      if (error) {
+        throw error
+      }
       if (!formData.name || !formData.type) {
         throw new Error("Name and type are required")
       }
 
       if (initialValues) {
-        const jwt = getJwt()
-        const res = await axios.put(
-          `${API_URL}/pokemons/${id}`,
-          {
-            data: formData,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }
-        )
+        const res = await updateAction()
         console.log("PUT res", res)
       } else {
         console.log("no data to update")

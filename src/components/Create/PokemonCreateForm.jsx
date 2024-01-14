@@ -1,7 +1,6 @@
 import { useState } from "react"
-import axios from "axios"
-import { getJwt } from "../../utility/jwt"
 import { POKEMON_TYPES } from "../../../constants"
+import useAPI from "../../hooks/useAPI"
 
 const SANITIZED_POKEMON_TYPES = POKEMON_TYPES.filter((type) => type !== "ANY") // m lo tr twy phel
 
@@ -17,22 +16,22 @@ const PokemonEditForm = () => {
   }
   const [formData, setFormData] = useState(initialValues)
 
+  const { action: createAction, error } = useAPI({
+    method: "post",
+    url: `${API_URL}/pokemons/`,
+    data: { data: formData },
+  })
+
   const createPokemon = async (formData) => {
     try {
+      if (error) {
+        throw error
+      }
       if (!formData.name || !formData.type) {
         throw new Error("Name and type are required")
       }
 
-      const jwt = getJwt()
-      const res = await axios.post(
-        `${API_URL}/pokemons`,
-        { data: formData },
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      )
+      const res = await createAction()
 
       if (res.status === 200) {
         alert("Success")
@@ -50,12 +49,10 @@ const PokemonEditForm = () => {
   const submitForm = (e) => {
     e.preventDefault()
 
-    console.log("formData", formData)
     createPokemon(formData)
   }
 
   const resetForm = () => {
-    console.log("reset")
     setFormData(initialValues)
   }
 

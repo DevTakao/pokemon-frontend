@@ -1,13 +1,12 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import MissingNoImage from "../../assets/missingno.png"
 import Loading from "../../common/Loading"
 import PokemonEditForm from "./PokemonEditForm"
 import ConfirmDeletePopup from "./ConfirmDeletePopup"
-import { getJwt } from "../../utility/jwt"
 import BackHomeButton from "../../common/BackHomeButton"
 import PokemonDetails from "./PokemonDetails"
+import useAPI from "../../hooks/useAPI"
 
 const ENV = import.meta.env
 const API_URL =
@@ -28,19 +27,23 @@ const DetailPage = () => {
 
   const toggleBoxShow = () => setBoxShow(!boxShow)
 
+  const { action: showPokemon, error } = useAPI({
+    method: "get",
+    url: `${API_URL}/pokemons/${id}`,
+  })
+
   const fetchDetails = async () => {
     setIsLoading(true)
     try {
-      const jwt = getJwt()
-      const { data: res } = await axios.get(`${API_URL}/pokemons/${id}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+      if (error) {
+        throw error
+      }
+      const { data: res } = await showPokemon()
       const data = res.data.attributes
       setPokemon(data)
     } catch (err) {
       console.error(err)
+      setErrorMessage(error)
     } finally {
       setIsLoading(false)
     }
