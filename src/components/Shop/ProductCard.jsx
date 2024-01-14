@@ -1,16 +1,36 @@
-import { useState } from "react"
-import { useAppStore } from "../../store/useAppStore"
+import { useReducer } from "react"
 import { motion } from "framer-motion"
 
 const ProductCard = ({ card }) => {
-  const { addToCart } = useAppStore()
-  const [quantity, setQuantity] = useState(1)
+  const reducerFunc = (state, action) => {
+    console.log("🚀 -> reducerFunc -> state:", state)
+    if (action.type === "ADD") {
+      const existingItemIndex = state.card.findIndex(
+        (cartItem) => cartItem.id === action.payload
+      )
+      console.log("This is existingIndex= ", existingItemIndex)
 
-  const doAddToCart = () => {
-    console.count("doAddToCart")
-    addToCart(card, quantity)
+      if (existingItemIndex !== -1) {
+        console.log("if")
+        const updatedCart = [...state.card]
+        updatedCart[existingItemIndex].quantity += state.card.quantity
+
+        return { card: updatedCart }
+      } else {
+        console.log("else state", state)
+        return {
+          card: [...state.card, { ...card, quantity: state.quantity }],
+        }
+      }
+    }
   }
 
+  const [state, dispatch] = useReducer(reducerFunc, {
+    card: [],
+    quantity: 1,
+  })
+
+  console.log("state", state)
   return (
     <motion.div
       whileHover={{ scale: 1.1 }}
@@ -28,7 +48,7 @@ const ProductCard = ({ card }) => {
       <div className="text-lg font-md">
         <label>Quantity</label>
         <input
-          value={quantity}
+          value={state.quantity}
           onChange={(e) => setQuantity(parseInt(e.target.value))}
           type="number"
           min="1"
@@ -38,7 +58,7 @@ const ProductCard = ({ card }) => {
       </div>
       <button
         type="button"
-        onClick={doAddToCart}
+        onClick={() => dispatch({ type: "ADD", payload: card.id })}
         className="w-1/2 px-2 py-2 mx-auto my-2 text-base text-white uppercase bg-blue-400 border rounded-full"
       >
         Add to Cart

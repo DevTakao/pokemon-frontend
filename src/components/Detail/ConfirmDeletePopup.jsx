@@ -19,7 +19,7 @@ const ConfirmDeletePopup = ({
   const navigate = useNavigate()
 
   const { action: deleteAction, error } = useAPI({
-    method: "deleteadnsondweiln",
+    method: "delete",
     url: `${API_URL}/pokemons/${pokemonId || id}`,
   })
 

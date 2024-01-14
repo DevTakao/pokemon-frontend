@@ -7,16 +7,25 @@ import axios from "axios"
 const validMethods = ["get", "post", "put", "delete"]
 const isValidMethod = (str) => validMethods.includes(str)
 
-const useAPI = ({ method = "get", url = "#" }) => {
+const useAPI = ({ method = "get", url = "#", data = {} }) => {
   const isValid = isValidMethod(method)
 
   const action = async () => {
     const jwt = getJwt()
-    const response = await axios[method](url, {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    })
+    let response
+    if (method === "put" || method === "post") {
+      response = await axios[method](url, data, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+    } else {
+      response = await axios[method](url, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+    }
 
     return response
   }
