@@ -1,4 +1,4 @@
-import { useAppStore } from "../../store/useAppStore"
+// import { useAppStore } from "../../store/useAppStore"
 import { FaTimes, FaPlus, FaMinus } from "react-icons/fa"
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -32,9 +32,11 @@ const fadeInAnimation = {
   },
 }
 
-const CartModal = ({ open, closeModal }) => {
-  const { cart, clearCart, addToCart, removeItem } = useAppStore()
-  console.log("cartttt= ", cart)
+const CartModal = ({ open, closeModal, updateCart, cartState }) => {
+  // const { cart, clearCart, addToCart, removeItem } = useAppStore()
+  // console.log("cartttt= ", cart)
+
+  const { cartItems: cart } = cartState
 
   const getTotalPrice = () => {
     let totalPrice = 0
@@ -46,16 +48,13 @@ const CartModal = ({ open, closeModal }) => {
 
   const removeItemHandler = (itemId) => {
     console.log("Removing item with id: ", itemId)
-    removeItem(itemId)
+    updateCart({ type: "REMOVE", payload: { id: itemId } })
   }
 
   // THUNK pattern
   const addItemHandler = (itemId) => {
     console.log("Adding item with id: ", itemId)
-    addToCart(
-      cart.find((item) => item.id === itemId),
-      1
-    )
+    updateCart({ type: "ADD", payload: { id: itemId, quantity: 1 } })
   }
 
   return (
@@ -113,7 +112,10 @@ const CartModal = ({ open, closeModal }) => {
           )}
           {cart.length > 0 && (
             <div className="flex items-center justify-center">
-              <button className="underline" onClick={clearCart}>
+              <button
+                className="underline"
+                onClick={() => updateCart({ type: "CLEAR" })}
+              >
                 Clear All
               </button>
             </div>

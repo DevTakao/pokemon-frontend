@@ -1,8 +1,14 @@
 import { TfiShoppingCart } from "react-icons/tfi"
-import { useAppStore } from "../../store/useAppStore"
+// import { useAppStore } from "../../store/useAppStore"
 import ProductCard from "./ProductCard"
-import { useEffect, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import CartModal from "./CartModal"
+import { cartReducerFunc } from "./reducers/cartReducer"
+
+const initialCartState = {
+  cartItems: [],
+}
+
 // mock data
 const cards = [
   {
@@ -57,7 +63,9 @@ const cards = [
 ]
 
 const ShopPage = () => {
-  const { cart } = useAppStore()
+  const [state, dispatch] = useReducer(cartReducerFunc, initialCartState)
+
+  // const { cart } = useAppStore()
   const [cartCount, setCartCount] = useState(0)
   const [open, setOpen] = useState(false)
 
@@ -65,18 +73,22 @@ const ShopPage = () => {
 
   // update count whenever cart is updated
   useEffect(() => {
+    console.log("reducer state:", state)
     let result = 0
-    let totalPrice = 0
-    cart.forEach((c) => (result += c.quantity))
-    cart.forEach((c) => (totalPrice += c.quantity * parseFloat(c.price)))
 
+    state.cartItems.forEach((c) => (result += c.quantity))
     setCartCount(result)
-  }, [cart])
+  }, [state])
 
   return (
     <div>
       <div className="flex justify-end p-5 text-center">
-        <CartModal open={open} closeModal={() => setOpen(false)} />
+        <CartModal
+          open={open}
+          closeModal={() => setOpen(false)}
+          updateCart={dispatch}
+          cartState={state}
+        />
         <button className="relative z-0 flex">
           <div className="flex" onClick={toggleCart}>
             <TfiShoppingCart size={30} />
@@ -95,7 +107,11 @@ const ShopPage = () => {
       </div>
       <div className="grid grid-cols-5">
         {cards.map((card, i) => (
-          <ProductCard key={i} card={card} />
+          <ProductCard
+            key={i}
+            card={card}
+            handleAdd={(payload) => dispatch({ type: "ADD", payload: payload })}
+          />
         ))}
       </div>
     </div>
