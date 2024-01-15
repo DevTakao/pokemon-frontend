@@ -19,7 +19,6 @@ const PokemonEditForm = () => {
   const { action: createAction, error } = useAPI({
     method: "post",
     url: `${API_URL}/pokemons/`,
-    data: { data: formData },
   })
 
   const createPokemon = async (formData) => {
@@ -31,7 +30,7 @@ const PokemonEditForm = () => {
         throw new Error("Name and type are required")
       }
 
-      const res = await createAction()
+      const res = await createAction({ data: formData })
 
       if (res.status === 200) {
         alert("Success")

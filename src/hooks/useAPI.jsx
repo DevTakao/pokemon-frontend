@@ -7,10 +7,10 @@ import axios from "axios"
 const validMethods = ["get", "post", "put", "delete"]
 const isValidMethod = (str) => validMethods.includes(str)
 
-const useAPI = ({ method = "get", url = "#", data = {} }) => {
+const useAPI = ({ method = "get", url = "#" }) => {
   const isValid = isValidMethod(method)
 
-  const action = async () => {
+  const action = async (data) => {
     const jwt = getJwt()
     let response
     if (method === "put" || method === "post") {
