@@ -24,7 +24,6 @@ const PokemonEditForm = ({
   const { action: updateAction, error } = useAPI({
     method: "put",
     url: `${API_URL}/pokemons/${id}`,
-    data: { data: formData },
   })
 
   const updatePokemon = async (formData) => {
@@ -37,7 +36,7 @@ const PokemonEditForm = ({
       }
 
       if (initialValues) {
-        const res = await updateAction()
+        const res = await updateAction({ data: formData })
         console.log("PUT res", res)
       } else {
         console.log("no data to update")
