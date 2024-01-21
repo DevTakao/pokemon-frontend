@@ -2,29 +2,40 @@ import axios from "axios"
 import { useState } from "react"
 import PasswordInput from "./PasswordInput"
 import { getJwt } from "../../utility/jwt"
-// import { FaEye, FaEyeSlash } from "react-icons/fa"
 
 const ENV = import.meta.env
 const API_URL =
   ENV.MODE === "development" ? ENV.VITE_DEV_API_URL : ENV.VITE_PROD_API_URL
 
-const PasswordForm = () => {
-  const [formData, setFormData] = useState({
-    currentPassword: "",
-    password: "",
-    passwordConfirmation: "",
-  })
+const defaultFormState = {
+  currentPassword: "",
+  password: "",
+  passwordConfirmation: "",
+}
 
+const PasswordForm = () => {
+  const [formData, setFormData] = useState(defaultFormState)
+
+  const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
 
   const changePassword = async () => {
     try {
       const jwt = getJwt()
-      await axios.post(`${API_URL}/auth/change-password`, formData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+      const res = await axios.post(
+        `${API_URL}/auth/change-password`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+
+      if (res.status === 200) {
+        setSuccess("Changed password successfully")
+        setFormData(defaultFormState)
+      }
     } catch (err) {
       console.log("err", err)
       const errorRes = err.response
@@ -36,6 +47,7 @@ const PasswordForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    setSuccess("")
     setError("")
     await changePassword()
   }
@@ -75,6 +87,7 @@ const PasswordForm = () => {
         />
 
         {error && <p className="text-red-300 font-sm">{error}</p>}
+        {success && <p className="text-green-600 font-sm">{success}</p>}
         <button
           type="submit"
           className="self-center inline-block px-5 py-2 mr-5 text-white bg-pink-400 rounded-full"

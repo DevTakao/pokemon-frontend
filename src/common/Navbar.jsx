@@ -15,16 +15,19 @@ const Navbar = () => {
         <h1 className="text-2xl text-white">Pokemons</h1>
         <ul className="flex items-center justify-between max-w-[700px] mx-auto">
           <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
-            <Link to="aboutus">About Us</Link>
+            <Link to="/">Home</Link>
+          </li>
+          <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
+            <Link to="aboutus">About</Link>
           </li>
           {isLoggedIn && (
             <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
-              <Link to="profile">My Profile</Link>
+              <Link to="shop">Shop</Link>
             </li>
           )}
           {isLoggedIn && (
             <li className="px-6 py-3 text-white transition duration-700 hover:scale-125">
-              <Link to="shop">Shop</Link>
+              <Link to="profile">My Profile</Link>
             </li>
           )}
         </ul>
