@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import PasswordInput from "./PasswordInput"
 import { getJwt } from "../../utility/jwt"
+import ErrorMessage from "../../common/ErrorMessage"
 
 const ENV = import.meta.env
 const API_URL =
@@ -55,7 +56,10 @@ const PasswordForm = () => {
   return (
     <div className="p-10 my-10 border border-gray-300">
       <h2 className="my-5 text-xl font-medium text-center">Change Password</h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 items-center"
+      >
         <PasswordInput
           value={formData.currentPassword}
           onChange={(e) =>
@@ -86,11 +90,11 @@ const PasswordForm = () => {
           placeholder="Your new password again"
         />
 
-        {error && <p className="text-red-300 font-sm">{error}</p>}
+        {error && <ErrorMessage message={error} />}
         {success && <p className="text-green-600 font-sm">{success}</p>}
         <button
           type="submit"
-          className="self-center inline-block px-5 py-2 mr-5 text-white bg-pink-400 rounded-full"
+          className="self-center inline-block px-5 py-2 text-white bg-pink-400 rounded-full"
         >
           Change Password
         </button>

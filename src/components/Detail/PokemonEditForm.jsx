@@ -66,60 +66,66 @@ const PokemonEditForm = ({
   return !formData ? (
     <></>
   ) : (
-    <form onSubmit={submitForm} onReset={resetForm} className="my-4">
-      <div>
-        <label
-          htmlFor="pokemonName"
-          className="w-[110px] inline-block font-bold"
-        >
-          Name:
-        </label>
-        <input
-          type="text"
-          placeholder="Pikachu"
-          name="pokemonName"
-          value={formData.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
-        />
+    <form
+      onSubmit={submitForm}
+      onReset={resetForm}
+      className="mt-4 mb-20 grid grid-cols-1 max-w-lg mx-auto text-left"
+    >
+      <div className="w-[90%] mx-auto">
+        <div>
+          <label
+            htmlFor="pokemonName"
+            className="w-[110px] inline-block font-bold"
+          >
+            Name:
+          </label>
+          <input
+            type="text"
+            placeholder="Pikachu"
+            name="pokemonName"
+            value={formData.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="pokemonType"
+            className="w-[110px] inline-block font-bold"
+          >
+            Type:
+          </label>
+          <select
+            value={formData.type}
+            onChange={(e) => handleChange("type", e.target.value)}
+            className="px-4 py-2 mx-3 bg-blue-300 rounded-full"
+          >
+            {SANITIZED_POKEMON_TYPES.map((type, i) => (
+              <option key={i}>{type}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label
+            htmlFor="pokemonImageUrl"
+            className="w-[110px] inline-block font-bold"
+          >
+            Image URL:
+          </label>
+          <input
+            type="text"
+            placeholder="Electric"
+            name="pokemonImageUrl"
+            value={formData.imageUrl}
+            onChange={(e) => handleChange("imageUrl", e.target.value)}
+            className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
+          />
+        </div>
       </div>
 
-      <div>
-        <label
-          htmlFor="pokemonType"
-          className="w-[110px] inline-block font-bold"
-        >
-          Type:
-        </label>
-        <select
-          value={formData.type}
-          onChange={(e) => handleChange("type", e.target.value)}
-          className="px-4 py-2 mx-3 bg-blue-300 rounded-full"
-        >
-          {SANITIZED_POKEMON_TYPES.map((type, i) => (
-            <option key={i}>{type}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label
-          htmlFor="pokemonImageUrl"
-          className="w-[110px] inline-block font-bold"
-        >
-          Image URL:
-        </label>
-        <input
-          type="text"
-          placeholder="Electric"
-          name="pokemonImageUrl"
-          value={formData.imageUrl}
-          onChange={(e) => handleChange("imageUrl", e.target.value)}
-          className="px-3 py-2 mx-3 my-4 text-black bg-blue-200 border border-blue-300 rounded-lg placeholder:text-white"
-        />
-      </div>
-
-      <div className="flex items-center justify-center mt-10">
+      <div className="flex items-center justify-between mt-10 w-[90%] mx-auto">
         <button
           type="submit"
           className="px-5 py-2 mr-5 text-white bg-blue-400 rounded-full"

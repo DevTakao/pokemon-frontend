@@ -79,7 +79,7 @@ const HomePage = () => {
       setIsLastPage(pagination.page === pagination.pageCount)
       setTotalItems(pagination.total)
     } catch (err) {
-      setErrorMessage(JSON.stringify(err.message))
+      setErrorMessage(err.message)
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -131,17 +131,19 @@ const HomePage = () => {
       />
       <Loading show={isLoading} />
       <ErrorMessage message={errorMessage} />
-      <Pagination
-        goPrev={() => goPrev({ set: setQueryParams })}
-        goNext={() => goNext({ set: setQueryParams })}
-        handlePageChange={(pageNo) =>
-          goToPage({ set: setQueryParams, pageNo: pageNo })
-        }
-        pageCount={pageCount}
-        isFirstPage={isFirstPage}
-        isLastPage={isLastPage}
-        currentPage={queryParams.pageNo}
-      />
+      {!isLoading && (
+        <Pagination
+          goPrev={() => goPrev({ set: setQueryParams })}
+          goNext={() => goNext({ set: setQueryParams })}
+          handlePageChange={(pageNo) =>
+            goToPage({ set: setQueryParams, pageNo: pageNo })
+          }
+          pageCount={pageCount}
+          isFirstPage={isFirstPage}
+          isLastPage={isLastPage}
+          currentPage={queryParams.pageNo}
+        />
+      )}
 
       {data.length > 0 ? (
         <div className="flex flex-col justify-center my-10">

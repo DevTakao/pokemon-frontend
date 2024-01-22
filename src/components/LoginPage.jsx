@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { useAppStore } from "../store/useAppStore"
 import LoginInput from "./LoginInput"
+import ErrorMessage from "../common/ErrorMessage"
 
 const ENV = import.meta.env
 const API_URL =
@@ -26,9 +27,6 @@ const LoginPage = () => {
   }
   const goToHomePage = () => navigate("/")
   const redirectToLoginPage = () => navigate("/login")
-  const showErrorMsg = (err) => {
-    setError(err.message)
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -41,10 +39,11 @@ const LoginPage = () => {
         goToHomePage()
       }
     } catch (err) {
+      console.error("Error logging in:", err)
       // login fail
-      console.error("Error logging in:", err.message)
+      const { error } = err.response.data
       redirectToLoginPage()
-      showErrorMsg(err)
+      setError(error.message)
     }
   }
 
@@ -97,12 +96,12 @@ const LoginPage = () => {
           <div>
             <button
               type="submit"
-              className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md group hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Login
             </button>
           </div>
-          {error && <p className="text-red-300 font-sm">{error}</p>}
+          {error && <ErrorMessage message={error} />}
         </form>
       </div>
     </div>
